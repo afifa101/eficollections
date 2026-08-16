@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    
-    <!-- Google Search Console -->
     <meta name="google-site-verification" content="1AwINtYxs4CycG_4gCxYsYpUddX_SOQjyXttS33d7J8" />
     <meta name="robots" content="index, follow" />
     <link rel="sitemap" type="application/xml" href="https://eficollections.netlify.app/sitemap.xml" />
-    
     <title>EFI Collection · Premium Store</title>
     <meta name="description" content="EFI Collection – Premium online shopping store." />
     <link rel="canonical" href="https://eficollections.netlify.app/" />
     <meta property="og:title" content="EFI Collection – Premium Store" />
     <meta property="og:description" content="Discover premium products at EFI Collection." />
     <meta name="twitter:card" content="summary_large_image" />
-    
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -25,44 +21,36 @@
         "contactPoint": { "@type": "ContactPoint", "telephone": "+923226193390", "contactType": "sales" }
     }
     </script>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #fcf9f7; color: #1e1e2a; }
         .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
-        
         .header { background: rgba(255,255,255,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 100; }
         .nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; flex-wrap: wrap; gap: 12px; }
         .logo { font-weight: 700; font-size: 26px; background: linear-gradient(135deg, #b35e5e, #e07a7a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
         .logo:hover { opacity: 0.8; }
-        
         .btn-pink { background: linear-gradient(135deg, #f8b4b4, #f5a0a0); border: none; color: #fff; padding: 12px 28px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: all .3s; }
         .btn-pink:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(245,160,160,0.3); }
         .btn-whatsapp { background: #25d366; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; }
         .btn-whatsapp:hover { transform: scale(1.02); }
-        
         .hero { background: linear-gradient(145deg, #fcf3f0, #fce9e6); border-radius: 40px; padding: 50px 40px; text-align: center; margin: 20px 0; border: 1px solid rgba(255,215,215,0.2); }
         .hero h1 { font-size: 2.4rem; color: #2d1f1f; }
         .hero p { color: #5a4a4a; font-size: 18px; margin: 10px 0; }
-        
         .section-title { font-size: 28px; font-weight: 700; margin: 30px 0 20px; color: #2d1f1f; }
         .section-title .back { font-size: 16px; color: #b35e5e; cursor: pointer; font-weight: 600; margin-left: 15px; }
         .section-title .back:hover { text-decoration: underline; }
-        
         .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
         .cat-item { background: white; padding: 30px 15px; border-radius: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,215,215,0.2); }
         .cat-item:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
         .cat-item i { font-size: 36px; color: #b35e5e; display: block; margin-bottom: 10px; }
         .cat-item span { font-weight: 600; font-size: 16px; display: block; }
         .cat-item .sub { font-size: 12px; color: #8a6e6e; display: block; margin-top: 4px; }
-        
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
-        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: 0.3s; border: 1px solid rgba(255,215,215,0.15); }
+        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: 0.3s; border: 1px solid rgba(255,215,215,0.15); cursor: pointer; }
         .product-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
         .product-card .img-wrap { height: 200px; overflow: hidden; background: #f8f4f2; position: relative; }
         .product-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
@@ -76,27 +64,24 @@
         .product-info .in-stock { background: #e8f5e9; color: #2e7d32; }
         .product-info .out-stock { background: #fce4ec; color: #c62828; }
         .product-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-        
+        .product-actions button { transition: all 0.2s; }
+        .product-actions button:hover { transform: scale(1.05); }
         .no-products { text-align: center; padding: 50px; color: #999; grid-column: 1/-1; }
         .no-products i { font-size: 50px; color: #ddd; display: block; margin-bottom: 10px; }
-        
         .why-section { background: linear-gradient(145deg, #fcf3f0, #fce9e6); border-radius: 30px; padding: 40px; margin: 40px 0; }
         .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
         .why-item { text-align: center; background: rgba(255,255,255,0.8); padding: 20px; border-radius: 16px; }
         .why-item i { font-size: 36px; color: #b35e5e; display: block; margin-bottom: 8px; }
         .why-item h4 { color: #2d1f1f; }
         .why-item p { color: #5a4a4a; font-size: 14px; }
-        
         .reviews-section { margin: 30px 0; }
         .review-card { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 15px; border: 1px solid rgba(255,215,215,0.15); }
         .review-card .stars { color: #f9b115; }
         .review-card .name { font-weight: 600; }
         .review-card .verified { background: #e8f5e9; color: #2e7d32; font-size: 11px; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-left: 8px; }
-        
         .newsletter-section { background: #fff9c4; border-radius: 30px; padding: 40px; text-align: center; margin: 30px 0; }
         .newsletter-section .newsletter-input { display: flex; gap: 10px; max-width: 450px; margin: 15px auto; flex-wrap: wrap; justify-content: center; }
         .newsletter-section .newsletter-input input { flex: 1; padding: 12px 18px; border-radius: 30px; border: 1px solid #e0d0d0; min-width:200px; background: white; }
-        
         .footer { background: #1e1e2a; color: #bdbdd0; padding: 40px 0 20px; margin-top: 40px; text-align: center; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 30px; text-align: left; margin-bottom: 20px; }
         .footer h4 { color: white; margin-bottom: 10px; }
@@ -105,19 +90,14 @@
         .social-icons { display: flex; gap: 15px; flex-wrap: wrap; }
         .social-icons a { font-size: 22px; color: #fadadd; }
         .social-icons a:hover { transform: scale(1.1); }
-        
         .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; padding: 12px 22px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 25px rgba(37,211,102,0.35); z-index: 99; }
         .whatsapp-float:hover { transform: scale(1.05); }
         .back-top { position: fixed; bottom: 100px; right: 20px; background: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #f0e6e6; color: #3d2a2a; cursor: pointer; z-index: 90; }
         .back-top:hover { background: #fadadd; }
-        
-        /* ADMIN ICON - COMPLETELY HIDDEN FROM CUSTOMERS */
         #adminIcon { display: none !important; }
-        
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: white; border-radius: 28px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative; }
         .modal-close { position: sticky; top: 0; float: right; background: #f5f0ee; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; }
-        
         .admin-form input, .admin-form textarea, .admin-form select { width: 100%; padding: 10px 14px; border: 2px solid #f0e6e6; border-radius: 12px; font-size: 14px; margin-bottom: 10px; }
         .admin-form input:focus, .admin-form textarea:focus, .admin-form select:focus { border-color: #b35e5e; outline: none; }
         .admin-form textarea { min-height: 60px; resize: vertical; }
@@ -129,19 +109,41 @@
         .upload-preview .preview-item { position: relative; width: 70px; height: 70px; border-radius: 10px; overflow: hidden; border: 2px solid #f0e6e6; }
         .upload-preview .preview-item img { width: 100%; height: 100%; object-fit: cover; }
         .upload-preview .preview-item .remove-btn { position: absolute; top: -5px; right: -5px; background: #e53935; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; cursor: pointer; }
-        
         .admin-login-box { text-align: center; padding: 20px; }
         .admin-login-box input { width: 100%; padding: 12px; border: 2px solid #f0e6e6; border-radius: 12px; font-size: 16px; margin: 10px 0; }
         .admin-login-box .error { color: #c62828; font-size: 14px; margin-top: 10px; }
-        
         .hidden { display: none !important; }
-        
         #loader { position: fixed; inset: 0; background: #fff9f7; display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.6s; }
         #loader.hide { opacity: 0; pointer-events: none; }
         .spinner { width: 50px; height: 50px; border-radius: 50%; border: 5px solid #fadadd; border-top-color: #e07a7a; animation: spin 0.9s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
+        .search-bar { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        .search-bar input { flex: 1; padding: 12px 18px; border-radius: 30px; border: 1px solid #e0d0d0; min-width:200px; background: white; }
+        .filter-sort { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
+        .filter-sort select { padding: 8px 14px; border-radius: 20px; border: 1px solid #e0d0d0; background: white; }
+        .toast-container { position: fixed; bottom: 80px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; max-width: 320px; }
+        .toast { background: #1e1e2a; color: white; padding: 14px 20px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.2); animation: slideIn 0.3s ease; display: flex; align-items: center; gap: 10px; font-size: 14px; }
+        .toast-success { background: #2e7d32; }
+        .toast-error { background: #c62828; }
+        .toast-info { background: #1565c0; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .product-modal .modal-content { max-width: 900px; padding: 0; overflow: hidden; border-radius: 28px; }
+        .product-modal .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        .product-modal .modal-image { background: #f8f4f2; padding: 30px; display: flex; align-items: center; justify-content: center; min-height: 400px; }
+        .product-modal .modal-image img { max-width: 100%; max-height: 400px; object-fit: contain; border-radius: 12px; }
+        .product-modal .modal-details { padding: 30px; display: flex; flex-direction: column; gap: 12px; }
+        .product-modal .modal-details h2 { font-size: 24px; color: #2d1f1f; }
+        .product-modal .modal-details .price { font-size: 28px; font-weight: 700; color: #b35e5e; }
+        .product-modal .modal-details .old-price { text-decoration: line-through; color: #999; font-size: 20px; margin-left: 10px; }
+        .product-modal .modal-details .desc { color: #5a4a4a; line-height: 1.6; }
+        .product-modal .modal-details .meta { color: #7a6a6a; font-size: 14px; }
+        .product-modal .modal-details .meta strong { color: #2d1f1f; }
+        .product-modal .modal-close { position: absolute; top: 15px; right: 15px; z-index: 10; background: rgba(255,255,255,0.9); }
         @media (max-width: 768px) {
+            .product-modal .modal-body { grid-template-columns: 1fr; }
+            .product-modal .modal-image { min-height: 200px; padding: 15px; }
+            .product-modal .modal-image img { max-height: 200px; }
+            .product-modal .modal-details { padding: 20px; }
             .nav { flex-direction: column; align-items: stretch; }
             .hero h1 { font-size: 1.8rem; }
             .hero { padding: 30px 20px; }
@@ -149,6 +151,8 @@
             .product-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
             .admin-form .row { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
+            .filter-sort { flex-direction: column; align-items: stretch; }
+            .toast-container { bottom: 80px; right: 10px; left: 10px; max-width: 100%; }
         }
         @media (max-width: 480px) {
             .product-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -157,46 +161,34 @@
     </style>
 </head>
 <body>
-
 <div id="loader"><div class="spinner"></div></div>
-
-<!-- ===== HEADER ===== -->
 <header class="header">
     <div class="container">
         <div class="nav">
-            <div class="logo" id="logoClick" title="Click 3 times for Admin">EFI Collection</div>
+            <div class="logo" id="logoClick">EFI Collection</div>
             <div style="display:flex; gap:15px; align-items:center;">
                 <a onclick="openWishlist()" style="color:#3d2a2a; font-size:20px; cursor:pointer;"><i class="far fa-heart"></i></a>
                 <a onclick="openCart()" style="color:#3d2a2a; font-size:20px; cursor:pointer; position:relative;">
                     <i class="fas fa-shopping-bag"></i>
                     <span id="cartCount" style="position:absolute;top:-8px;right:-8px;background:#b35e5e;color:white;font-size:10px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</span>
                 </a>
-                <!-- ADMIN ICON - COMPLETELY HIDDEN -->
                 <span id="adminIcon"></span>
             </div>
         </div>
     </div>
 </header>
-
-<!-- ===== MAIN ===== -->
 <main class="container">
-
-    <!-- ===== VIEW: HOME (Categories) ===== -->
     <div id="viewHome">
         <div style="font-size:14px;color:#9a7a7a;padding:15px 0;"><i class="fas fa-home"></i> Home / Premium Collection</div>
-        
         <section class="hero">
             <h1>✨ Premium Elegance</h1>
             <p>Discover the new collection</p>
-            <button class="btn-pink">Shop Now</button>
+            <button class="btn-pink" onclick="document.getElementById('searchInput').focus()">Shop Now</button>
         </section>
-
         <section>
             <h2 class="section-title">📂 Shop by Category</h2>
             <div class="categories-grid" id="categoriesGrid"></div>
         </section>
-
-        <!-- Why Choose -->
         <section class="why-section">
             <h2 style="text-align:center;margin-bottom:20px;font-size:28px;color:#2d1f1f;">🌟 Why Choose EFI?</h2>
             <div class="why-grid">
@@ -206,14 +198,10 @@
                 <div class="why-item"><i class="fas fa-wallet"></i><h4>Best Prices</h4><p>Affordable premium products</p></div>
             </div>
         </section>
-
-        <!-- Reviews -->
         <section class="reviews-section">
             <h2 class="section-title">💬 Customer Reviews</h2>
             <div id="reviewsContainer"></div>
         </section>
-
-        <!-- Newsletter -->
         <section class="newsletter-section">
             <h3>📧 Subscribe to Our Newsletter</h3>
             <p>Get updates on new arrivals and exclusive offers</p>
@@ -223,15 +211,22 @@
             </div>
         </section>
     </div>
-
-    <!-- ===== VIEW: CATEGORY PRODUCTS ===== -->
     <div id="viewCategory" class="hidden">
         <div style="font-size:14px;color:#9a7a7a;padding:15px 0;">
             <i class="fas fa-home" onclick="goHome()" style="cursor:pointer;color:#b35e5e;"></i> 
             <span onclick="goHome()" style="cursor:pointer;color:#b35e5e;">Home</span> 
             / <span id="categoryBreadcrumb">Category</span>
         </div>
-        
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search products in this category..." oninput="filterCategoryProducts()">
+        </div>
+        <div class="filter-sort">
+            <select id="sortSelect" onchange="filterCategoryProducts()">
+                <option value="name">Sort by Name</option>
+                <option value="priceLow">Price: Low to High</option>
+                <option value="priceHigh">Price: High to Low</option>
+            </select>
+        </div>
         <section>
             <h2 class="section-title">
                 🛍️ <span id="categoryTitle">Products</span>
@@ -240,10 +235,7 @@
             <div class="product-grid" id="categoryProductGrid"></div>
         </section>
     </div>
-
 </main>
-
-<!-- ===== FOOTER ===== -->
 <footer class="footer">
     <div class="container">
         <div class="footer-grid">
@@ -266,10 +258,10 @@
             </div>
             <div>
                 <h4>Categories</h4>
-                <a onclick="filterCategory('Clothes')">Clothes</a>
-                <a onclick="filterCategory('Shoes')">Shoes</a>
-                <a onclick="filterCategory('Bags')">Bags</a>
-                <a onclick="filterCategory('Electronics')">Electronics</a>
+                <a onclick="showCategory('Clothes')">Clothes</a>
+                <a onclick="showCategory('Shoes')">Shoes</a>
+                <a onclick="showCategory('Bags')">Bags</a>
+                <a onclick="showCategory('Electronics')">Electronics</a>
             </div>
             <div>
                 <h4>Contact</h4>
@@ -282,140 +274,198 @@
         <div class="copyright">© <span id="currentYear"></span> EFI Collection. All rights reserved. | Made with ❤️ by Afifa Shakeel</div>
     </div>
 </footer>
-
-<!-- ===== FLOATING BUTTONS ===== -->
-<a href="https://wa.me/923226193390?text=Assalam-o-Alaikum!%20I%20want%20to%20order%20a%20product" target="_blank" class="whatsapp-float">
-    <i class="fab fa-whatsapp"></i> Order Now
-</a>
+<a href="https://wa.me/923226193390?text=Assalam-o-Alaikum!%20I%20want%20to%20order%20a%20product" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i> Order Now</a>
 <div class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
 
-<!-- ===== MODALS ===== -->
-<div class="modal" id="cartModal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('cartModal').style.display='none'"><i class="fas fa-times"></i></button>
-        <h2>🛒 Your Cart</h2>
-        <div id="cartItems"></div>
-        <div id="cartTotal" style="font-weight:700;font-size:20px;margin-top:15px;"></div>
-        <button class="btn-pink" onclick="proceedToCheckout()" style="width:100%;margin-top:10px;">Proceed to Checkout</button>
-    </div>
-</div>
+<!-- MODALS -->
+<div class="modal" id="cartModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('cartModal')"><i class="fas fa-times"></i></button><h2>🛒 Your Cart</h2><div id="cartItems"></div><div id="cartTotal" style="font-weight:700;font-size:20px;margin-top:15px;"></div><button class="btn-pink" onclick="proceedToCheckout()" style="width:100%;margin-top:10px;">Proceed to Checkout</button></div></div>
+<div class="modal" id="wishlistModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('wishlistModal')"><i class="fas fa-times"></i></button><h2>❤️ Wishlist</h2><div id="wishlistItems"></div></div></div>
+<div class="modal" id="adminModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></button><div id="adminBody"></div></div></div>
+<div class="modal product-modal" id="productModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('productModal')"><i class="fas fa-times"></i></button><div class="modal-body"><div class="modal-image" id="productModalImage"></div><div class="modal-details" id="productModalDetails"></div></div></div></div>
+<div class="modal" id="aboutModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('aboutModal')"><i class="fas fa-times"></i></button><h2>👩 About EFI Collection</h2><div style="line-height:1.8;color:#4d3a3a;margin-top:15px;"><p><strong>Assalam-o-Alaikum!</strong></p><p>My name is <strong>Afifa Shakeel</strong>. I am from <strong>Okara</strong>, Pakistan.</p><p>If you want to buy any product, you can contact me on WhatsApp. I deal in premium quality products with reasonable prices.</p><br><p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> +92 322 6193390, +92 321 7352159</p><p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p></div></div></div>
+<div class="modal" id="contactModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('contactModal')"><i class="fas fa-times"></i></button><h2>📞 Contact Us</h2><div style="margin-top:15px;"><p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/923226193390" target="_blank">+92 322 6193390</a>, <a href="https://wa.me/923217352159" target="_blank">+92 321 7352159</a></p><p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p><p><i class="fas fa-map-marker-alt" style="color:#b35e5e;"></i> <strong>Location:</strong> Okara, Pakistan</p><br><p><strong>Business Hours:</strong><br>Monday - Saturday: 10:00 AM - 8:00 PM<br>Sunday: Closed</p></div></div></div>
 
-<div class="modal" id="wishlistModal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('wishlistModal').style.display='none'"><i class="fas fa-times"></i></button>
-        <h2>❤️ Wishlist</h2>
-        <div id="wishlistItems"></div>
-    </div>
-</div>
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
 
-<div class="modal" id="adminModal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('adminModal').style.display='none'"><i class="fas fa-times"></i></button>
-        <div id="adminBody"></div>
-    </div>
-</div>
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
+    "firebase/firestore": "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js",
+    "firebase/storage": "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"
+  }
+}
+</script>
 
-<div class="modal" id="aboutModal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('aboutModal').style.display='none'"><i class="fas fa-times"></i></button>
-        <h2>👩 About EFI Collection</h2>
-        <div style="line-height:1.8;color:#4d3a3a;margin-top:15px;">
-            <p><strong>Assalam-o-Alaikum!</strong></p>
-            <p>My name is <strong>Afifa Shakeel</strong>. I am from <strong>Okara</strong>, Pakistan.</p>
-            <p>If you want to buy any product, you can contact me on WhatsApp. I deal in premium quality products with reasonable prices.</p>
-            <br>
-            <p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> +92 322 6193390, +92 321 7352159</p>
-            <p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="contactModal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('contactModal').style.display='none'"><i class="fas fa-times"></i></button>
-        <h2>📞 Contact Us</h2>
-        <div style="margin-top:15px;">
-            <p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/923226193390" target="_blank">+92 322 6193390</a>, <a href="https://wa.me/923217352159" target="_blank">+92 321 7352159</a></p>
-            <p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p>
-            <p><i class="fas fa-map-marker-alt" style="color:#b35e5e;"></i> <strong>Location:</strong> Okara, Pakistan</p>
-            <br>
-            <p><strong>Business Hours:</strong><br>Monday - Saturday: 10:00 AM - 8:00 PM<br>Sunday: Closed</p>
-        </div>
-    </div>
-</div>
-
-<!-- ============================================================ -->
-<!-- ===== SCRIPTS ===== -->
-<!-- ============================================================ -->
-<script>
+<script type="module">
 // ============================================================
-// CONFIG
+// FIREBASE IMPORTS & CONFIG
 // ============================================================
-const ADMIN_PASSWORD = 'Efi@Efi$$$';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc, setDoc, getDoc, query, orderBy, where, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBFWqL0tL7ticxRrQ_GViBXBATd6UyKAEk",
+    authDomain: "eficollections-f2203.firebaseapp.com",
+    projectId: "eficollections-f2203",
+    storageBucket: "eficollections-f2203.firebasestorage.app",
+    messagingSenderId: "631627743397",
+    appId: "1:631627743397:web:5ff969ef36648148ee8d4c",
+    measurementId: "G-XFZNJCKHYS"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+// Expose for inline scripts
+window.db = db;
+window.storage = storage;
+window.collection = collection;
+window.doc = doc;
+window.getDocs = getDocs;
+window.addDoc = addDoc;
+window.deleteDoc = deleteDoc;
+window.setDoc = setDoc;
+window.getDoc = getDoc;
+window.query = query;
+window.orderBy = orderBy;
+window.where = where;
+window.updateDoc = updateDoc;
+window.serverTimestamp = serverTimestamp;
+window.ref = ref;
+window.uploadBytes = uploadBytes;
+window.getDownloadURL = getDownloadURL;
+window.deleteObject = deleteObject;
+
+console.log('🔥 Firebase initialized');
 
 // ============================================================
-// DATA
+// GLOBAL STATE
 // ============================================================
-const DEFAULT_CATEGORIES = [
-    { id: 1, name: 'Clothes', icon: 'fa-tshirt', sub: ['Men', 'Women', 'Kids'] },
-    { id: 2, name: 'Shoes', icon: 'fa-shoe-prints', sub: ['Men', 'Women'] },
-    { id: 3, name: 'Bags', icon: 'fa-bag-shopping', sub: [] },
-    { id: 4, name: 'Cosmetics', icon: 'fa-mask', sub: [] },
-    { id: 5, name: 'Jewellery', icon: 'fa-gem', sub: [] },
-    { id: 6, name: 'Watches', icon: 'fa-clock', sub: [] },
-    { id: 7, name: 'Electronics', icon: 'fa-laptop', sub: [] },
-    { id: 8, name: 'Accessories', icon: 'fa-hat-cowboy', sub: [] },
-    { id: 9, name: 'Home & Kitchen', icon: 'fa-utensils', sub: [] }
-];
-
-const DEFAULT_PRODUCTS = [
-    { id: 1, name: 'Summer Floral Dress', price: 49, discount_price: 69, stock: 15, category: 'Clothes', sizes: 'S,M,L,XL', colors: 'Pink,White', rating: 0, reviews_count: 0, description: 'Elegant floral summer dress.', media: ['https://picsum.photos/400/400?random=1'] },
-    { id: 2, name: 'Leather Sneakers', price: 79, discount_price: null, stock: 8, category: 'Shoes', sizes: '6,7,8,9,10,11', colors: 'Black,Brown', rating: 0, reviews_count: 0, description: 'Premium leather sneakers.', media: ['https://picsum.photos/400/400?random=2'] },
-    { id: 3, name: 'Crossbody Bag', price: 34, discount_price: 44, stock: 20, category: 'Bags', sizes: 'One Size', colors: 'Red,Blue,Black', rating: 0, reviews_count: 0, description: 'Stylish leather crossbody bag.', media: ['https://picsum.photos/400/400?random=3'] },
-    { id: 4, name: 'Classic Watch', price: 129, discount_price: null, stock: 3, category: 'Watches', sizes: 'One Size', colors: 'Gold,Silver', rating: 0, reviews_count: 0, description: 'Elegant stainless steel watch.', media: ['https://picsum.photos/400/400?random=4'] },
-    { id: 5, name: 'Wireless Earbuds', price: 45, discount_price: 65, stock: 25, category: 'Electronics', sizes: 'One Size', colors: 'White,Black', rating: 0, reviews_count: 0, description: 'Premium wireless earbuds.', media: ['https://picsum.photos/400/400?random=5'] }
-];
-
-const DEFAULT_REVIEWS = [];
-
-function getData(key, def) { try { const d = localStorage.getItem('efi_' + key); return d ? JSON.parse(d) : def; } catch { return def; } }
-function setData(key, val) { localStorage.setItem('efi_' + key, JSON.stringify(val)); }
-
-let categories = getData('categories', DEFAULT_CATEGORIES);
-let products = getData('products', DEFAULT_PRODUCTS);
-let reviews = getData('reviews', DEFAULT_REVIEWS);
-let cart = getData('cart', []);
-let wishlist = getData('wishlist', []);
-let verifiedOrders = getData('verified_orders', []);
+let categories = [];
+let products = [];
+let reviews = [];
+let cart = JSON.parse(localStorage.getItem('efi_cart') || '[]');
+let wishlist = JSON.parse(localStorage.getItem('efi_wishlist') || '[]');
 let isAdminLoggedIn = false;
 let currentCategory = '';
+let uploadFiles = [];
+let editingProductId = null;
+let settings = { whatsapp: ['+923226193390', '+923217352159'] };
+const ADMIN_PASSWORD = 'Efi@Efi$$$';
 
-function saveAll() {
-    setData('categories', categories);
-    setData('products', products);
-    setData('reviews', reviews);
-    setData('cart', cart);
-    setData('wishlist', wishlist);
-    setData('verified_orders', verifiedOrders);
-}
+window.categories = categories;
+window.products = products;
+window.reviews = reviews;
+window.cart = cart;
+window.wishlist = wishlist;
+window.isAdminLoggedIn = isAdminLoggedIn;
+window.currentCategory = currentCategory;
+window.uploadFiles = uploadFiles;
+window.editingProductId = editingProductId;
+window.settings = settings;
 
 // ============================================================
-// NAVIGATION
+// TOAST NOTIFICATIONS
 // ============================================================
-function goHome() {
-    document.getElementById('viewHome').classList.remove('hidden');
-    document.getElementById('viewCategory').classList.add('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+    container.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+}
+window.showToast = showToast;
+
+function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+window.closeModal = closeModal;
+
+// ============================================================
+// FIREBASE LOAD FUNCTIONS
+// ============================================================
+async function loadSettings() {
+    try {
+        const docRef = doc(db, 'settings', 'app');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            settings = docSnap.data();
+            window.settings = settings;
+        } else {
+            await setDoc(docRef, { whatsapp: ['+923226193390', '+923217352159'] });
+            settings = { whatsapp: ['+923226193390', '+923217352159'] };
+        }
+    } catch (e) { console.error('Error loading settings:', e); }
 }
 
-function showCategory(categoryName) {
-    currentCategory = categoryName;
-    document.getElementById('viewHome').classList.add('hidden');
-    document.getElementById('viewCategory').classList.remove('hidden');
-    document.getElementById('categoryTitle').textContent = categoryName;
-    document.getElementById('categoryBreadcrumb').textContent = categoryName;
-    renderCategoryProducts(categoryName);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+async function loadCategories() {
+    try {
+        const q = query(collection(db, 'categories'), orderBy('name'));
+        const snapshot = await getDocs(q);
+        categories = [];
+        snapshot.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
+        if (categories.length === 0) {
+            const defaults = [
+                { name: 'Clothes', icon: 'fa-tshirt', sub: ['Men', 'Women', 'Kids'] },
+                { name: 'Shoes', icon: 'fa-shoe-prints', sub: ['Men', 'Women'] },
+                { name: 'Bags', icon: 'fa-bag-shopping', sub: [] },
+                { name: 'Cosmetics', icon: 'fa-mask', sub: [] },
+                { name: 'Jewellery', icon: 'fa-gem', sub: [] },
+                { name: 'Watches', icon: 'fa-clock', sub: [] },
+                { name: 'Electronics', icon: 'fa-laptop', sub: [] },
+                { name: 'Accessories', icon: 'fa-hat-cowboy', sub: [] },
+                { name: 'Home & Kitchen', icon: 'fa-utensils', sub: [] }
+            ];
+            for (const c of defaults) await addDoc(collection(db, 'categories'), c);
+            await loadCategories();
+        }
+        renderCategories();
+        // Update category filter dropdown
+        const sel = document.getElementById('categoryFilter');
+        if (sel) {
+            const current = sel.value;
+            sel.innerHTML = '<option value="all">All Categories</option>' + 
+                categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+            sel.value = current;
+        }
+    } catch (e) { console.error('Error loading categories:', e); }
+}
+
+async function loadProducts() {
+    try {
+        const q = query(collection(db, 'products'), orderBy('name'));
+        const snapshot = await getDocs(q);
+        products = [];
+        snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+        if (products.length === 0) {
+            const defaults = [
+                { name: 'Summer Floral Dress', price: 49, discount_price: 69, stock: 15, category: 'Clothes', sizes: 'S,M,L,XL', colors: 'Pink,White', rating: 0, reviews_count: 0, description: 'Elegant floral summer dress.', media: ['https://picsum.photos/400/400?random=1'] },
+                { name: 'Leather Sneakers', price: 79, discount_price: null, stock: 8, category: 'Shoes', sizes: '6,7,8,9,10,11', colors: 'Black,Brown', rating: 0, reviews_count: 0, description: 'Premium leather sneakers.', media: ['https://picsum.photos/400/400?random=2'] },
+                { name: 'Crossbody Bag', price: 34, discount_price: 44, stock: 20, category: 'Bags', sizes: 'One Size', colors: 'Red,Blue,Black', rating: 0, reviews_count: 0, description: 'Stylish leather crossbody bag.', media: ['https://picsum.photos/400/400?random=3'] },
+                { name: 'Classic Watch', price: 129, discount_price: null, stock: 3, category: 'Watches', sizes: 'One Size', colors: 'Gold,Silver', rating: 0, reviews_count: 0, description: 'Elegant stainless steel watch.', media: ['https://picsum.photos/400/400?random=4'] },
+                { name: 'Wireless Earbuds', price: 45, discount_price: 65, stock: 25, category: 'Electronics', sizes: 'One Size', colors: 'White,Black', rating: 0, reviews_count: 0, description: 'Premium wireless earbuds.', media: ['https://picsum.photos/400/400?random=5'] }
+            ];
+            for (const p of defaults) await addDoc(collection(db, 'products'), p);
+            await loadProducts();
+        }
+        if (currentCategory) renderCategoryProducts(currentCategory);
+        updateCartCount();
+    } catch (e) { console.error('Error loading products:', e); }
+}
+
+async function loadReviews() {
+    try {
+        const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        reviews = [];
+        snapshot.forEach(doc => reviews.push({ id: doc.id, ...doc.data() }));
+        renderReviews();
+    } catch (e) { console.error('Error loading reviews:', e); }
 }
 
 // ============================================================
@@ -423,51 +473,72 @@ function showCategory(categoryName) {
 // ============================================================
 function renderCategories() {
     const grid = document.getElementById('categoriesGrid');
+    if (!grid) return;
     grid.innerHTML = categories.map(c => `
         <div class="cat-item" onclick="showCategory('${c.name}')">
-            <i class="fas ${c.icon}"></i>
+            <i class="fas ${c.icon || 'fa-tag'}"></i>
             <span>${c.name}</span>
             ${c.sub && c.sub.length ? `<span class="sub">${c.sub.join(' · ')}</span>` : ''}
         </div>
     `).join('');
 }
 
+function productCardHTML(p) {
+    const media = p.media || [];
+    const firstMedia = media.length > 0 ? media[0] : 'https://picsum.photos/300/300?random=' + p.id;
+    const discountPercent = p.discount_price ? Math.round((1 - p.price/p.discount_price)*100) : 0;
+    const inWishlist = wishlist.includes(p.id);
+    return `
+    <div class="product-card" onclick="openProductModal('${p.id}')">
+        <div class="img-wrap">
+            <img src="${firstMedia}" alt="${p.name}" loading="lazy">
+            ${discountPercent ? `<span class="badge">-${discountPercent}%</span>` : ''}
+        </div>
+        <div class="product-info">
+            <h4>${p.name}</h4>
+            <div class="price">Rs. ${p.price}${p.discount_price ? `<span class="old-price">Rs. ${p.discount_price}</span>` : ''}</div>
+            <span class="stock ${p.stock > 0 ? 'in-stock' : 'out-stock'}">${p.stock > 0 ? '✅ In Stock' : '❌ Out of Stock'}</span>
+            <div class="product-actions" onclick="event.stopPropagation();">
+                <button class="btn-whatsapp" onclick="orderWhatsApp('${p.name}', ${p.price})"><i class="fab fa-whatsapp"></i> Order</button>
+                <button onclick="toggleWishlist('${p.id}')" style="background:#f5f0ee;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;color:${inWishlist ? '#e53935' : '#3d2a2a'};"><i class="fas ${inWishlist ? 'fa-heart' : 'fa-heart'}"></i></button>
+                <button onclick="addToCart('${p.id}')" style="background:#fadadd;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;"><i class="fas fa-shopping-cart"></i></button>
+            </div>
+        </div>
+    </div>`;
+}
+
 function renderCategoryProducts(categoryName) {
     const grid = document.getElementById('categoryProductGrid');
+    if (!grid) return;
     const filtered = products.filter(p => p.category === categoryName);
-    
     if (filtered.length === 0) {
         grid.innerHTML = `<div class="no-products"><i class="fas fa-box"></i><p>No products in this category yet.</p></div>`;
         return;
     }
-    
-    grid.innerHTML = filtered.map(p => {
-        const media = p.media || [];
-        const firstMedia = media.length > 0 ? media[0] : 'https://picsum.photos/300/300?random=' + p.id;
-        const discountPercent = p.discount_price ? Math.round((1 - p.price/p.discount_price)*100) : 0;
-        return `
-        <div class="product-card">
-            <div class="img-wrap">
-                <img src="${firstMedia}" alt="${p.name}" loading="lazy">
-                ${discountPercent ? `<span class="badge">-${discountPercent}%</span>` : ''}
-            </div>
-            <div class="product-info">
-                <h4>${p.name}</h4>
-                <div class="price">Rs. ${p.price}${p.discount_price ? `<span class="old-price">Rs. ${p.discount_price}</span>` : ''}</div>
-                <span class="stock ${p.stock > 0 ? 'in-stock' : 'out-stock'}">${p.stock > 0 ? '✅ In Stock' : '❌ Out of Stock'}</span>
-                <div class="product-actions">
-                    <button class="btn-whatsapp" onclick="orderWhatsApp('${p.name}', ${p.price})"><i class="fab fa-whatsapp"></i> Order</button>
-                    <button onclick="toggleWishlist(${p.id})" style="background:#f5f0ee;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;"><i class="far fa-heart"></i></button>
-                    <button onclick="addToCart(${p.id})" style="background:#fadadd;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;"><i class="fas fa-shopping-cart"></i></button>
-                    <button onclick="viewProduct(${p.id})" style="background:#f5f0ee;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;"><i class="fas fa-eye"></i></button>
-                </div>
-            </div>
-        </div>
-    `}).join('');
+    grid.innerHTML = filtered.map(p => productCardHTML(p)).join('');
 }
+
+window.filterCategoryProducts = function() {
+    if (!currentCategory) return;
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const sort = document.getElementById('sortSelect').value;
+    let filtered = products.filter(p => {
+        return p.category === currentCategory && p.name.toLowerCase().includes(search);
+    });
+    if (sort === 'priceLow') filtered.sort((a,b) => a.price - b.price);
+    else if (sort === 'priceHigh') filtered.sort((a,b) => b.price - a.price);
+    else filtered.sort((a,b) => a.name.localeCompare(b.name));
+    
+    const grid = document.getElementById('categoryProductGrid');
+    if (grid) {
+        grid.innerHTML = filtered.length ? filtered.map(p => productCardHTML(p)).join('') : 
+            `<div class="no-products"><i class="fas fa-box"></i><p>No products found</p></div>`;
+    }
+};
 
 function renderReviews() {
     const container = document.getElementById('reviewsContainer');
+    if (!container) return;
     const shown = reviews.slice(0, 6);
     if (shown.length === 0) {
         container.innerHTML = `<div style="text-align:center;padding:30px;color:#999;background:white;border-radius:16px;border:1px solid rgba(255,215,215,0.15);">
@@ -479,7 +550,7 @@ function renderReviews() {
     }
     container.innerHTML = shown.map(r => `
         <div class="review-card">
-            <div class="stars">${'⭐'.repeat(r.rating)}</div>
+            <div class="stars">${'⭐'.repeat(Math.min(5, r.rating || 0))}</div>
             <p style="margin:5px 0;">${r.comment}</p>
             <span class="name">– ${r.customer_name}</span>
             ${r.verified ? `<span class="verified"><i class="fas fa-check-circle"></i> Verified Buyer</span>` : ''}
@@ -488,35 +559,90 @@ function renderReviews() {
 }
 
 function updateCartCount() {
-    document.getElementById('cartCount').textContent = cart.reduce((sum, c) => sum + c.qty, 0);
+    const countEl = document.getElementById('cartCount');
+    if (countEl) {
+        const total = cart.reduce((sum, c) => sum + c.qty, 0);
+        countEl.textContent = total;
+    }
+    localStorage.setItem('efi_cart', JSON.stringify(cart));
 }
+
+// ============================================================
+// PRODUCT MODAL
+// ============================================================
+window.openProductModal = function(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    const modal = document.getElementById('productModal');
+    const imgContainer = document.getElementById('productModalImage');
+    const details = document.getElementById('productModalDetails');
+    const media = p.media || [];
+    const firstMedia = media.length > 0 ? media[0] : 'https://picsum.photos/400/400?random=' + p.id;
+    const inWishlist = wishlist.includes(p.id);
+    const stockText = p.stock > 0 ? '✅ In Stock' : '❌ Out of Stock';
+    const stockClass = p.stock > 0 ? 'in-stock' : 'out-stock';
+    
+    imgContainer.innerHTML = `<img src="${firstMedia}" alt="${p.name}">`;
+    details.innerHTML = `
+        <h2>${p.name}</h2>
+        <div class="price">Rs. ${p.price}${p.discount_price ? `<span class="old-price">Rs. ${p.discount_price}</span>` : ''}</div>
+        <span class="stock ${stockClass}">${stockText}</span>
+        <div class="desc">${p.description || 'No description available.'}</div>
+        <div class="meta"><strong>Category:</strong> ${p.category}</div>
+        <div class="meta"><strong>Sizes:</strong> ${p.sizes || 'Various'}</div>
+        <div class="meta"><strong>Colors:</strong> ${p.colors || 'Various'}</div>
+        <div class="product-actions">
+            <button class="btn-whatsapp" onclick="orderWhatsApp('${p.name}', ${p.price})"><i class="fab fa-whatsapp"></i> Order Now</button>
+            <button onclick="addToCart('${p.id}');closeModal('productModal');" style="background:#fadadd;border:none;padding:8px 20px;border-radius:30px;font-weight:600;cursor:pointer;"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+            <button onclick="toggleWishlist('${p.id}');openProductModal('${p.id}');" style="background:#f5f0ee;border:none;padding:8px 20px;border-radius:30px;font-weight:600;cursor:pointer;color:${inWishlist ? '#e53935' : '#3d2a2a'};"><i class="fas ${inWishlist ? 'fa-heart' : 'fa-heart'}"></i> ${inWishlist ? 'Remove' : 'Wishlist'}</button>
+        </div>
+    `;
+    modal.style.display = 'flex';
+};
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+window.goHome = function() {
+    document.getElementById('viewHome').classList.remove('hidden');
+    document.getElementById('viewCategory').classList.add('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+window.showCategory = function(categoryName) {
+    currentCategory = categoryName;
+    document.getElementById('viewHome').classList.add('hidden');
+    document.getElementById('viewCategory').classList.remove('hidden');
+    document.getElementById('categoryTitle').textContent = categoryName;
+    document.getElementById('categoryBreadcrumb').textContent = categoryName;
+    document.getElementById('searchInput').value = '';
+    document.getElementById('sortSelect').value = 'name';
+    renderCategoryProducts(categoryName);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
 // ============================================================
 // CART FUNCTIONS
 // ============================================================
-function addToCart(id) {
+window.addToCart = function(id) {
     const existing = cart.find(c => c.id === id);
     if (existing) existing.qty++;
     else cart.push({ id, qty: 1 });
-    saveAll();
     updateCartCount();
-    alert('✅ Added to cart!');
-}
+    showToast('Added to cart!', 'success');
+};
 
-function openCart() {
+window.openCart = function() {
     const modal = document.getElementById('cartModal');
     const items = document.getElementById('cartItems');
     const total = document.getElementById('cartTotal');
-    
     if (cart.length === 0) {
         items.innerHTML = '<p style="color:#999;text-align:center;padding:20px;">Your cart is empty</p>';
         total.textContent = '';
         modal.style.display = 'flex';
         return;
     }
-    
-    let html = '';
-    let subtotal = 0;
+    let html = '', subtotal = 0;
     cart.forEach(c => {
         const p = products.find(x => x.id === c.id);
         if (!p) return;
@@ -524,138 +650,121 @@ function openCart() {
         html += `
             <div style="display:flex;gap:15px;padding:10px 0;border-bottom:1px solid #f0e6e6;align-items:center;">
                 <div style="flex:1;"><strong>${p.name}</strong><br>Rs. ${p.price} × ${c.qty}</div>
-                <button onclick="updateQty(${c.id},-1)" style="background:#f5f0ee;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;">-</button>
+                <button onclick="updateQty('${c.id}',-1)" style="background:#f5f0ee;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;">-</button>
                 <span>${c.qty}</span>
-                <button onclick="updateQty(${c.id},1)" style="background:#f5f0ee;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;">+</button>
-                <button onclick="removeFromCart(${c.id})" style="background:none;border:none;color:#c62828;cursor:pointer;"><i class="fas fa-trash"></i></button>
+                <button onclick="updateQty('${c.id}',1)" style="background:#f5f0ee;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;">+</button>
+                <button onclick="removeFromCart('${c.id}')" style="background:none;border:none;color:#c62828;cursor:pointer;"><i class="fas fa-trash"></i></button>
             </div>
         `;
     });
-    
     const delivery = subtotal > 0 && subtotal < 1000 ? 150 : 0;
     items.innerHTML = html;
     total.innerHTML = `Subtotal: Rs. ${subtotal}${delivery ? `<br>Delivery: Rs. ${delivery}` : ''}<br><strong>Total: Rs. ${subtotal + delivery}</strong>`;
     modal.style.display = 'flex';
-}
+};
 
-function updateQty(id, delta) {
+window.updateQty = function(id, delta) {
     const c = cart.find(x => x.id === id);
-    if (c) {
-        c.qty += delta;
-        if (c.qty <= 0) cart = cart.filter(x => x.id !== id);
-        saveAll();
-        updateCartCount();
-        openCart();
-    }
-}
+    if (c) { c.qty += delta; if (c.qty <= 0) cart = cart.filter(x => x.id !== id); updateCartCount(); openCart(); }
+};
 
-function removeFromCart(id) {
+window.removeFromCart = function(id) {
     cart = cart.filter(x => x.id !== id);
-    saveAll();
     updateCartCount();
     openCart();
-}
+};
 
-function proceedToCheckout() {
-    if (cart.length === 0) return alert('Cart is empty!');
+window.proceedToCheckout = function() {
+    if (cart.length === 0) return showToast('Cart is empty!', 'error');
     document.getElementById('cartModal').style.display = 'none';
     let msg = 'Assalam-o-Alaikum.\n\nI want to place an order.\n\nProducts:\n';
     let total = 0;
     cart.forEach(c => {
         const p = products.find(x => x.id === c.id);
-        if (p) {
-            msg += `${p.name} × ${c.qty} = Rs. ${p.price * c.qty}\n`;
-            total += p.price * c.qty;
-            verifiedOrders.push({ phone: '', product_id: p.id });
-        }
+        if (p) { msg += `${p.name} × ${c.qty} = Rs. ${p.price * c.qty}\n`; total += p.price * c.qty; }
     });
     msg += `\nTotal: Rs. ${total}\n\nPlease confirm my order.`;
     cart = [];
-    saveAll();
     updateCartCount();
-    window.open(`https://wa.me/923226193390?text=${encodeURIComponent(msg)}`, '_blank');
-    setTimeout(() => {
-        window.open(`https://wa.me/923217352159?text=${encodeURIComponent(msg)}`, '_blank');
-    }, 500);
-}
+    const whatsappNumbers = settings.whatsapp || ['+923226193390', '+923217352159'];
+    window.open(`https://wa.me/${whatsappNumbers[0].replace('+','')}?text=${encodeURIComponent(msg)}`, '_blank');
+    if (whatsappNumbers[1]) {
+        setTimeout(() => window.open(`https://wa.me/${whatsappNumbers[1].replace('+','')}?text=${encodeURIComponent(msg)}`, '_blank'), 500);
+    }
+    showToast('Order placed! Check WhatsApp.', 'success');
+};
 
 // ============================================================
 // WISHLIST
 // ============================================================
-function toggleWishlist(id) {
+window.toggleWishlist = function(id) {
     const idx = wishlist.indexOf(id);
-    if (idx > -1) wishlist.splice(idx, 1);
-    else wishlist.push(id);
-    saveAll();
-}
+    if (idx > -1) { wishlist.splice(idx, 1); showToast('Removed from wishlist', 'info'); }
+    else { wishlist.push(id); showToast('Added to wishlist', 'success'); }
+    localStorage.setItem('efi_wishlist', JSON.stringify(wishlist));
+    if (currentCategory) renderCategoryProducts(currentCategory);
+};
 
-function openWishlist() {
+window.openWishlist = function() {
     const modal = document.getElementById('wishlistModal');
     const items = document.getElementById('wishlistItems');
     const wishProducts = products.filter(p => wishlist.includes(p.id));
     items.innerHTML = wishProducts.length ? wishProducts.map(p => `
         <div style="display:flex;gap:15px;padding:10px 0;border-bottom:1px solid #f0e6e6;align-items:center;">
             <div style="flex:1;"><strong>${p.name}</strong><br>Rs. ${p.price}</div>
-            <button onclick="toggleWishlist(${p.id});openWishlist();" style="background:#fce4ec;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;">Remove</button>
+            <button onclick="toggleWishlist('${p.id}');openWishlist();" style="background:#fce4ec;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;">Remove</button>
         </div>
     `).join('') : '<p style="color:#999;text-align:center;padding:20px;">Your wishlist is empty</p>';
     modal.style.display = 'flex';
-}
+};
 
 // ============================================================
 // WHATSAPP ORDER
 // ============================================================
-function orderWhatsApp(name, price) {
+window.orderWhatsApp = function(name, price) {
     const msg = `Assalam-o-Alaikum!%0A%0AI want to order this product:%0AProduct: ${encodeURIComponent(name)}%0APrice: Rs. ${price}%0AQuantity: 1%0A%0APlease confirm my order.`;
-    window.open(`https://wa.me/923226193390?text=${msg}`, '_blank');
-    setTimeout(() => {
-        window.open(`https://wa.me/923217352159?text=${msg}`, '_blank');
-    }, 400);
-}
-
-// ============================================================
-// VIEW PRODUCT
-// ============================================================
-function viewProduct(id) {
-    const p = products.find(x => x.id === id);
-    if (!p) return;
-    alert(`📦 ${p.name}\n💰 Price: Rs. ${p.price}\n📝 ${p.description || 'No description'}\n\nOrder via WhatsApp by clicking the Order button.`);
-}
+    const whatsappNumbers = settings.whatsapp || ['+923226193390', '+923217352159'];
+    window.open(`https://wa.me/${whatsappNumbers[0].replace('+','')}?text=${msg}`, '_blank');
+    if (whatsappNumbers[1]) {
+        setTimeout(() => window.open(`https://wa.me/${whatsappNumbers[1].replace('+','')}?text=${msg}`, '_blank'), 400);
+    }
+};
 
 // ============================================================
 // NEWSLETTER
 // ============================================================
-function subscribeNewsletter() {
+window.subscribeNewsletter = async function() {
     const email = document.getElementById('newsletterEmail').value.trim();
-    if (!email) return alert('Please enter your email!');
-    alert('✅ Thank you for subscribing!');
-    document.getElementById('newsletterEmail').value = '';
-}
+    if (!email) return showToast('Please enter your email!', 'error');
+    try {
+        await addDoc(collection(db, 'newsletters'), { email, createdAt: serverTimestamp() });
+        document.getElementById('newsletterEmail').value = '';
+        showToast('Thank you for subscribing!', 'success');
+    } catch (e) {
+        console.error('Newsletter error:', e);
+        showToast('Failed to subscribe. Please try again.', 'error');
+    }
+};
 
 // ============================================================
 // ABOUT / CONTACT
 // ============================================================
-function showAbout() { document.getElementById('aboutModal').style.display = 'flex'; }
-function showContact() { document.getElementById('contactModal').style.display = 'flex'; }
+window.showAbout = function() { document.getElementById('aboutModal').style.display = 'flex'; };
+window.showContact = function() { document.getElementById('contactModal').style.display = 'flex'; };
 
 // ============================================================
-// ADMIN - ONLY LOGO 3 CLICKS (NO ICON)
+// ADMIN - SIMPLE PASSWORD LOGIN
 // ============================================================
 let logoClickCount = 0;
 let logoClickTimer = null;
-
 document.getElementById('logoClick').addEventListener('click', function() {
     logoClickCount++;
     clearTimeout(logoClickTimer);
     logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2000);
-    if (logoClickCount >= 3) {
-        logoClickCount = 0;
-        // Admin icon ko hide hi rakhein - sirf admin panel open karein
-        openAdmin();
-    }
+    if (logoClickCount >= 3) { logoClickCount = 0; openAdmin(); }
 });
 
-function openAdmin() {
+window.openAdmin = async function() {
     const modal = document.getElementById('adminModal');
     const body = document.getElementById('adminBody');
     
@@ -673,44 +782,43 @@ function openAdmin() {
         return;
     }
     
+    await loadSettings();
+    await loadCategories();
+    await loadProducts();
+    
     body.innerHTML = `
         <div class="admin-form">
-            <h3>📊 Dashboard</h3>
+            <h3>📊 Dashboard <button onclick="adminLogout()" style="float:right;background:#fce4ec;border:none;padding:6px 16px;border-radius:20px;cursor:pointer;">Logout</button></h3>
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0;">
                 <div style="background:#f5f0ee;padding:15px;border-radius:12px;text-align:center;"><strong>${products.length}</strong><br>Products</div>
                 <div style="background:#f5f0ee;padding:15px;border-radius:12px;text-align:center;"><strong>${categories.length}</strong><br>Categories</div>
                 <div style="background:#f5f0ee;padding:15px;border-radius:12px;text-align:center;"><strong>${reviews.length}</strong><br>Reviews</div>
                 <div style="background:#f5f0ee;padding:15px;border-radius:12px;text-align:center;"><strong>${cart.length}</strong><br>Cart Items</div>
             </div>
-            
             <hr>
-            <h3>➕ Add Product</h3>
+            <h3>${editingProductId ? '✏️ Edit Product' : '➕ Add Product'}</h3>
             <div class="row">
-                <input type="text" id="pName" placeholder="Product Name *">
-                <input type="number" id="pPrice" placeholder="Price *">
+                <input type="text" id="pName" placeholder="Product Name *" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.name||'' : ''}">
+                <input type="number" id="pPrice" placeholder="Price *" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.price||'' : ''}">
             </div>
             <div class="row">
-                <input type="number" id="pDiscount" placeholder="Discount Price">
-                <input type="number" id="pStock" placeholder="Stock" value="10">
+                <input type="number" id="pDiscount" placeholder="Discount Price" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.discount_price||'' : ''}">
+                <input type="number" id="pStock" placeholder="Stock" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.stock||10 : 10}">
             </div>
             <div class="row">
-                <select id="pCategory">
-                    ${categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}
-                </select>
-                <input type="text" id="pSizes" placeholder="Sizes (comma)">
+                <select id="pCategory">${categories.map(c => `<option value="${c.name}" ${editingProductId && products.find(p=>p.id===editingProductId)?.category===c.name ? 'selected' : ''}>${c.name}</option>`).join('')}</select>
+                <input type="text" id="pSizes" placeholder="Sizes (comma)" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.sizes||'' : ''}">
             </div>
-            <input type="text" id="pColors" placeholder="Colors (comma)">
-            <textarea id="pDesc" placeholder="Description *"></textarea>
-            
+            <input type="text" id="pColors" placeholder="Colors (comma)" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.colors||'' : ''}">
+            <textarea id="pDesc" placeholder="Description *">${editingProductId ? products.find(p=>p.id===editingProductId)?.description||'' : ''}</textarea>
             <div class="upload-area" onclick="document.getElementById('fileInput').click()">
                 <i class="fas fa-cloud-upload-alt"></i>
-                <p>Click to upload images</p>
+                <p>Click to upload images (max 5)</p>
                 <input type="file" id="fileInput" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
             </div>
             <div class="upload-preview" id="uploadPreview"></div>
-            
-            <button class="btn-pink" onclick="addProduct()" style="width:100%;margin-top:10px;">Publish Product</button>
-            
+            <button class="btn-pink" onclick="saveProduct()" style="width:100%;margin-top:10px;">${editingProductId ? 'Update Product' : 'Publish Product'}</button>
+            ${editingProductId ? `<button onclick="cancelEdit()" style="width:100%;margin-top:5px;background:#f5f0ee;border:none;padding:10px;border-radius:20px;cursor:pointer;">Cancel Edit</button>` : ''}
             <hr style="margin:20px 0;">
             <h3>📦 Manage Products</h3>
             <div style="max-height:200px;overflow-y:auto;">
@@ -718,12 +826,12 @@ function openAdmin() {
                     <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0e6e6;">
                         <span>${p.name} <span style="font-size:12px;color:#999;">(${p.category})</span></span>
                         <div>
-                            <button onclick="deleteProduct(${p.id})" style="background:#fce4ec;border:none;padding:4px 12px;border-radius:12px;cursor:pointer;color:#c62828;">🗑️</button>
+                            <button onclick="editProduct('${p.id}')" style="background:#e3f2fd;border:none;padding:4px 12px;border-radius:12px;cursor:pointer;margin-right:5px;">✏️</button>
+                            <button onclick="deleteProduct('${p.id}')" style="background:#fce4ec;border:none;padding:4px 12px;border-radius:12px;cursor:pointer;color:#c62828;">🗑️</button>
                         </div>
                     </div>
                 `).join('')}
             </div>
-            
             <hr style="margin:20px 0;">
             <h3>📂 Manage Categories</h3>
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;">
@@ -734,41 +842,52 @@ function openAdmin() {
                 ${categories.map(c => `
                     <span style="background:#f5f0ee;padding:4px 12px;border-radius:20px;font-size:13px;">
                         ${c.name}
-                        <span onclick="adminDeleteCategory(${c.id})" style="color:#e53935;cursor:pointer;margin-left:5px;">✕</span>
+                        <span onclick="adminDeleteCategory('${c.id}')" style="color:#e53935;cursor:pointer;margin-left:5px;">✕</span>
                     </span>
                 `).join('')}
             </div>
-            
             <hr style="margin:20px 0;">
             <h3>⚙️ Settings</h3>
             <div>
                 <label>WhatsApp Numbers (one per line)</label>
-                <textarea id="adminWhatsapp" rows="3" style="width:100%;padding:10px;border:2px solid #f0e6e6;border-radius:12px;">${['+923226193390','+923217352159'].join('\n')}</textarea>
+                <textarea id="adminWhatsapp" rows="3" style="width:100%;padding:10px;border:2px solid #f0e6e6;border-radius:12px;">${(settings.whatsapp || ['+923226193390', '+923217352159']).join('\n')}</textarea>
                 <button class="btn-pink" onclick="adminUpdateWhatsapp()" style="margin-top:5px;">Update WhatsApp</button>
-            </div>
-            <div style="margin-top:15px;">
-                <button onclick="if(confirm('Clear all data?')){localStorage.clear();location.reload();}" style="background:#e53935;color:white;padding:10px 20px;border:none;border-radius:10px;cursor:pointer;">Clear All Data</button>
             </div>
         </div>
     `;
+    if (editingProductId) {
+        const p = products.find(x => x.id === editingProductId);
+        if (p && p.media) {
+            uploadFiles = [...p.media];
+            renderUploadPreview();
+        }
+    }
     modal.style.display = 'flex';
-}
+};
 
-function adminLogin() {
+window.adminLogin = function() {
     const pass = document.getElementById('adminPass').value;
+    
     if (pass === ADMIN_PASSWORD) {
         isAdminLoggedIn = true;
         document.getElementById('adminError').textContent = '';
         openAdmin();
+        showToast('Login successful!', 'success');
     } else {
         document.getElementById('adminError').textContent = '❌ Invalid password!';
+        showToast('Invalid password!', 'error');
     }
-}
+};
 
-let uploadFiles = [];
+window.adminLogout = function() {
+    isAdminLoggedIn = false;
+    document.getElementById('adminModal').style.display = 'none';
+    showToast('Logged out', 'info');
+};
 
-function handleFiles(files) {
+window.handleFiles = function(files) {
     for (let f of files) {
+        if (uploadFiles.length >= 5) { showToast('Max 5 images allowed', 'error'); break; }
         const reader = new FileReader();
         reader.onload = function(e) {
             uploadFiles.push(e.target.result);
@@ -777,19 +896,20 @@ function handleFiles(files) {
         reader.readAsDataURL(f);
     }
     document.getElementById('fileInput').value = '';
-}
+};
 
-function renderUploadPreview() {
+window.renderUploadPreview = function() {
     const container = document.getElementById('uploadPreview');
+    if (!container) return;
     container.innerHTML = uploadFiles.map((src, i) => `
         <div class="preview-item">
             <img src="${src}">
             <button class="remove-btn" onclick="uploadFiles.splice(${i},1);renderUploadPreview();">✕</button>
         </div>
     `).join('');
-}
+};
 
-function addProduct() {
+window.saveProduct = async function() {
     const name = document.getElementById('pName').value.trim();
     const price = parseFloat(document.getElementById('pPrice').value);
     const discount = document.getElementById('pDiscount').value.trim();
@@ -799,72 +919,133 @@ function addProduct() {
     const colors = document.getElementById('pColors').value.trim();
     const desc = document.getElementById('pDesc').value.trim();
     
-    if (!name || !price || !desc) return alert('Fill Name, Price & Description!');
-    if (uploadFiles.length === 0) return alert('Upload at least one image!');
+    if (!name || !price || !desc) return showToast('Fill Name, Price & Description!', 'error');
+    if (uploadFiles.length === 0) return showToast('Upload at least one image!', 'error');
     
-    products.push({
-        id: Date.now(), name, price, discount_price: discount ? parseFloat(discount) : null,
-        stock, category, sizes: sizes || 'Various', colors: colors || 'Various',
-        rating: 0, reviews_count: 0, description: desc, media: uploadFiles.slice()
-    });
+    const productData = { 
+        name, 
+        price, 
+        discount_price: discount ? parseFloat(discount) : null, 
+        stock, 
+        category, 
+        sizes: sizes || 'Various', 
+        colors: colors || 'Various', 
+        rating: 0, 
+        reviews_count: 0, 
+        description: desc, 
+        media: uploadFiles.slice(),
+        createdAt: serverTimestamp()
+    };
+    
+    try {
+        if (editingProductId) {
+            await updateDoc(doc(db, 'products', editingProductId), productData);
+            editingProductId = null;
+            showToast('Product updated!', 'success');
+        } else {
+            await addDoc(collection(db, 'products'), productData);
+            showToast('Product added!', 'success');
+        }
+        uploadFiles = [];
+        document.getElementById('uploadPreview').innerHTML = '';
+        await loadProducts();
+        if (currentCategory) renderCategoryProducts(currentCategory);
+        openAdmin();
+    } catch (e) {
+        console.error('Error saving product:', e);
+        showToast('Failed to save product: ' + e.message, 'error');
+    }
+};
+
+window.editProduct = function(id) {
+    editingProductId = id;
+    openAdmin();
+};
+
+window.cancelEdit = function() {
+    editingProductId = null;
     uploadFiles = [];
-    saveAll();
-    renderCategoryProducts(currentCategory);
     openAdmin();
-    alert('✅ Product added!');
-}
+};
 
-function deleteProduct(id) {
+window.deleteProduct = async function(id) {
     if (!confirm('Delete this product?')) return;
-    products = products.filter(p => p.id !== id);
-    saveAll();
-    renderCategoryProducts(currentCategory);
-    openAdmin();
-    alert('✅ Product deleted!');
-}
+    try {
+        await deleteDoc(doc(db, 'products', id));
+        showToast('Product deleted!', 'success');
+        await loadProducts();
+        if (currentCategory) renderCategoryProducts(currentCategory);
+        openAdmin();
+    } catch (e) {
+        console.error('Error deleting product:', e);
+        showToast('Failed to delete product.', 'error');
+    }
+};
 
-function adminAddCategory() {
+window.adminAddCategory = async function() {
     const name = document.getElementById('adminCatName').value.trim();
-    if (!name) return alert('Enter category name');
-    categories.push({ id: Date.now(), name, icon: 'fa-tag', sub: [] });
-    saveAll();
-    renderCategories();
-    openAdmin();
-    alert('✅ Category added!');
-}
+    if (!name) return showToast('Enter category name', 'error');
+    try {
+        await addDoc(collection(db, 'categories'), { name, icon: 'fa-tag', sub: [] });
+        showToast('Category added!', 'success');
+        document.getElementById('adminCatName').value = '';
+        await loadCategories();
+        openAdmin();
+    } catch (e) { console.error(e); showToast('Failed to add category.', 'error'); }
+};
 
-function adminDeleteCategory(id) {
+window.adminDeleteCategory = async function(id) {
     if (!confirm('Delete this category?')) return;
-    categories = categories.filter(c => c.id !== id);
-    saveAll();
-    renderCategories();
-    openAdmin();
-}
+    try {
+        await deleteDoc(doc(db, 'categories', id));
+        showToast('Category deleted!', 'success');
+        await loadCategories();
+        openAdmin();
+    } catch (e) { console.error(e); showToast('Failed to delete category.', 'error'); }
+};
 
-function adminUpdateWhatsapp() {
-    alert('✅ WhatsApp numbers updated!');
-    openAdmin();
-}
+window.adminUpdateWhatsapp = async function() {
+    const numbers = document.getElementById('adminWhatsapp').value.split('\n').filter(n => n.trim());
+    try {
+        await setDoc(doc(db, 'settings', 'app'), { whatsapp: numbers });
+        settings.whatsapp = numbers;
+        window.settings = settings;
+        showToast('WhatsApp numbers updated!', 'success');
+        openAdmin();
+    } catch (e) {
+        console.error(e);
+        showToast('Failed to update settings.', 'error');
+    }
+};
 
 // ============================================================
 // INIT
 // ============================================================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('currentYear').textContent = new Date().getFullYear();
-    renderCategories();
-    renderReviews();
+    await loadSettings();
+    await loadCategories();
+    await loadProducts();
+    await loadReviews();
     updateCartCount();
-    
-    setTimeout(() => {
-        document.getElementById('loader').classList.add('hide');
-    }, 500);
-    
+    setTimeout(() => document.getElementById('loader').classList.add('hide'), 500);
     document.querySelectorAll('.modal').forEach(m => {
-        m.addEventListener('click', function(e) {
-            if (e.target === this) this.style.display = 'none';
-        });
+        m.addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; });
     });
 });
+
+// Expose functions
+window.renderCategoryProducts = renderCategoryProducts;
+window.renderReviews = renderReviews;
+window.updateCartCount = updateCartCount;
+window.loadProducts = loadProducts;
+window.loadCategories = loadCategories;
+window.loadReviews = loadReviews;
+window.productCardHTML = productCardHTML;
+window.filterCategoryProducts = filterCategoryProducts;
+
+console.log('✅ EFI Collections ready!');
+console.log('🔑 Admin Password: Efi@Efi$$$');
 </script>
 </body>
 </html>
