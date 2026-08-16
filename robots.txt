@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://eficollections.netlify.app/sitemap.xml
+
+Sitemap: https://eficollections.pk/sitemap.xml
