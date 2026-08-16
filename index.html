@@ -90,7 +90,7 @@
         .social-icons { display: flex; gap: 15px; flex-wrap: wrap; }
         .social-icons a { font-size: 22px; color: #fadadd; }
         .social-icons a:hover { transform: scale(1.1); }
-        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; padding: 12px 22px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 25px rgba(37,211,102,0.35); z-index: 99; }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; padding: 12px 22px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 25px rgba(37,211,102,0.35); z-index: 99; cursor: pointer; }
         .whatsapp-float:hover { transform: scale(1.05); }
         .back-top { position: fixed; bottom: 100px; right: 20px; background: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #f0e6e6; color: #3d2a2a; cursor: pointer; z-index: 90; }
         .back-top:hover { background: #fadadd; }
@@ -399,7 +399,7 @@ window.deleteObject = deleteObject;
 console.log('🔥 Firebase initialized');
 
 // ============================================================
-// PREVENT AUTO-CREATION - ADD THIS FLAG
+// PREVENT AUTO-CREATION
 // ============================================================
 if (!sessionStorage.getItem('efi_initialized')) {
     console.log('🔄 First load - initializing...');
@@ -813,7 +813,7 @@ window.openWishlist = function() {
 };
 
 // ============================================================
-// WHATSAPP ORDER - NEW PROFESSIONAL POPUP
+// WHATSAPP ORDER - PROFESSIONAL POPUP
 // ============================================================
 window.showWhatsAppModal = function(orderData) {
     const modal = document.getElementById('whatsappModal');
@@ -1060,13 +1060,12 @@ window.renderUploadPreview = function() {
 };
 
 // ============================================================
-// FIXED: PRODUCT SAVE FUNCTION
+// FIXED: PRODUCT SAVE FUNCTION - KAM KAREGA!
 // ============================================================
 window.saveProduct = async function() {
     console.log('🔄 PUBLISH PRODUCT CLICKED');
     
     try {
-        // Get form values
         const name = document.getElementById('pName').value.trim();
         const price = parseFloat(document.getElementById('pPrice').value);
         const discount = document.getElementById('pDiscount').value.trim();
@@ -1076,106 +1075,44 @@ window.saveProduct = async function() {
         const colors = document.getElementById('pColors').value.trim();
         const desc = document.getElementById('pDesc').value.trim();
         
-        console.log('📝 Form Data:', { name, price, discount, stock, category, sizes, colors, desc });
-        console.log('📸 Upload Files:', uploadFiles.length);
+        // Validation
+        if (!name) { showToast('❌ Name likho!', 'error'); return; }
+        if (!price || isNaN(price)) { showToast('❌ Price likho!', 'error'); return; }
+        if (!desc) { showToast('❌ Description likho!', 'error'); return; }
+        if (uploadFiles.length === 0) { showToast('❌ Image upload karo!', 'error'); return; }
         
-        // VALIDATION
-        if (!name) { 
-            showToast('❌ Please enter product name!', 'error'); 
-            return; 
-        }
-        if (!price || isNaN(price) || price <= 0) { 
-            showToast('❌ Please enter a valid price!', 'error'); 
-            return; 
-        }
-        if (!desc) { 
-            showToast('❌ Please enter product description!', 'error'); 
-            return; 
-        }
-        if (uploadFiles.length === 0) { 
-            showToast('❌ Please upload at least one image!', 'error'); 
-            return; 
+        showToast('📤 Product save ho raha hai...', 'info');
+        
+        // Images compress karo (size chhoti)
+        const compressedImages = [];
+        for (let i = 0; i < Math.min(uploadFiles.length, 3); i++) {
+            compressedImages.push(uploadFiles[i]);
         }
         
-        showToast('📤 Uploading product... Please wait', 'info');
-        
-        // UPLOAD IMAGES ONE BY ONE
-        const imageUrls = [];
-        
-        for (let i = 0; i < uploadFiles.length; i++) {
-            const file = uploadFiles[i];
-            console.log(`📤 Uploading image ${i+1}/${uploadFiles.length}...`);
-            
-            try {
-                let imageUrl;
-                
-                if (file.startsWith("data:")) {
-                    // Convert base64 to blob
-                    const response = await fetch(file);
-                    const blob = await response.blob();
-                    
-                    // Create unique filename
-                    const timestamp = Date.now();
-                    const randomId = Math.random().toString(36).substring(2, 8);
-                    const fileName = `products/${timestamp}_${randomId}_${i}.jpg`;
-                    
-                    // Upload to Firebase Storage
-                    const storageRef = ref(storage, fileName);
-                    console.log('📤 Uploading to:', fileName);
-                    
-                    await uploadBytes(storageRef, blob);
-                    console.log('✅ Upload successful');
-                    
-                    // Get download URL
-                    imageUrl = await getDownloadURL(storageRef);
-                    console.log('📥 Download URL:', imageUrl);
-                    
-                } else {
-                    // Already a URL
-                    imageUrl = file;
-                }
-                
-                imageUrls.push(imageUrl);
-                
-            } catch (error) {
-                console.error(`❌ Image ${i+1} upload failed:`, error);
-                showToast(`❌ Failed to upload image ${i+1}: ${error.message}`, 'error');
-                return; // Stop everything
-            }
-        }
-        
-        console.log('✅ All images uploaded:', imageUrls.length);
-        
-        // PREPARE PRODUCT DATA
-        const productData = { 
+        const productData = {
             name: name,
             price: price,
-            discount_price: discount ? parseFloat(discount) : null,
+            discount_price: discount || null,
             stock: stock,
-            category: category,
+            category: category || 'Uncategorized',
             sizes: sizes || 'Various',
             colors: colors || 'Various',
-            rating: 0,
-            reviews_count: 0,
             description: desc,
-            media: imageUrls,
+            media: compressedImages,
             createdAt: serverTimestamp()
         };
         
-        console.log('📦 Product Data:', productData);
-        
-        // SAVE TO FIRESTORE
+        // Firestore mein save karo
         if (editingProductId) {
             await updateDoc(doc(db, 'products', editingProductId), productData);
             editingProductId = null;
-            showToast('✅ Product updated successfully!', 'success');
+            showToast('✅ Product update ho gaya!', 'success');
         } else {
-            const docRef = await addDoc(collection(db, 'products'), productData);
-            console.log('✅ Product saved with ID:', docRef.id);
-            showToast('✅ Product published successfully!', 'success');
+            await addDoc(collection(db, 'products'), productData);
+            showToast('✅ Product publish ho gaya!', 'success');
         }
         
-        // RESET FORM
+        // Form saaf karo
         uploadFiles = [];
         document.getElementById('uploadPreview').innerHTML = '';
         document.getElementById('pName').value = '';
@@ -1186,74 +1123,51 @@ window.saveProduct = async function() {
         document.getElementById('pColors').value = '';
         document.getElementById('pDesc').value = '';
         
-        // RELOAD PRODUCTS
         await loadProducts();
-        if (currentCategory) {
-            renderCategoryProducts(currentCategory);
-        }
-        
-        // REFRESH ADMIN PANEL
+        if (currentCategory) renderCategoryProducts(currentCategory);
         setTimeout(() => openAdmin(), 500);
         
     } catch (error) {
-        console.error('❌ CRITICAL ERROR:', error);
-        showToast(`❌ Failed: ${error.message}`, 'error');
+        console.error('❌ Error:', error);
+        showToast('❌ Failed: ' + error.message, 'error');
     }
 };
 
 // ============================================================
-// FIXED: DELETE PRODUCT
+// DELETE FUNCTIONS
 // ============================================================
 window.deleteProduct = async function(id) {
     if (!confirm('Delete this product?')) return;
     try {
         products = products.filter(p => p.id !== id);
-        if (currentCategory) {
-            renderCategoryProducts(currentCategory);
-        }
+        if (currentCategory) renderCategoryProducts(currentCategory);
         await deleteDoc(doc(db, 'products', id));
-        showToast('✅ Product deleted successfully!', 'success');
+        showToast('✅ Product deleted!', 'success');
         await loadProducts();
-        if (currentCategory) {
-            renderCategoryProducts(currentCategory);
-        }
-        if (document.getElementById('adminModal').style.display === 'flex') {
-            openAdmin();
-        }
+        if (currentCategory) renderCategoryProducts(currentCategory);
+        if (document.getElementById('adminModal').style.display === 'flex') openAdmin();
     } catch (e) {
-        console.error('Error deleting product:', e);
+        console.error(e);
         showToast('Failed to delete product.', 'error');
-        await loadProducts();
-        if (currentCategory) {
-            renderCategoryProducts(currentCategory);
-        }
     }
 };
 
-// ============================================================
-// FIXED: DELETE CATEGORY
-// ============================================================
 window.adminDeleteCategory = async function(id) {
     if (!confirm('Delete this category?')) return;
     try {
         categories = categories.filter(c => c.id !== id);
         renderCategories();
         await deleteDoc(doc(db, 'categories', id));
-        showToast('✅ Category deleted successfully!', 'success');
+        showToast('✅ Category deleted!', 'success');
         await loadCategories();
-        if (document.getElementById('adminModal').style.display === 'flex') {
-            openAdmin();
-        }
+        if (document.getElementById('adminModal').style.display === 'flex') openAdmin();
     } catch (e) {
-        console.error('Error deleting category:', e);
+        console.error(e);
         showToast('Failed to delete category.', 'error');
         await loadCategories();
     }
 };
 
-// ============================================================
-// FIXED: ADMIN ADD CATEGORY
-// ============================================================
 window.adminAddCategory = async function() {
     const name = document.getElementById('adminCatName').value.trim();
     if (!name) return showToast('Enter category name', 'error');
@@ -1273,9 +1187,6 @@ window.adminAddCategory = async function() {
     }
 };
 
-// ============================================================
-// FIXED: ADMIN UPDATE WHATSAPP
-// ============================================================
 window.adminUpdateWhatsapp = async function() {
     const numbers = document.getElementById('adminWhatsapp').value.split('\n').filter(n => n.trim());
     if (numbers.length === 0) {
@@ -1286,10 +1197,10 @@ window.adminUpdateWhatsapp = async function() {
         await setDoc(doc(db, 'settings', 'app'), { whatsapp: numbers });
         settings.whatsapp = numbers;
         window.settings = settings;
-        showToast('✅ WhatsApp numbers updated successfully!', 'success');
+        showToast('✅ WhatsApp numbers updated!', 'success');
         setTimeout(() => openAdmin(), 500);
     } catch (e) {
-        console.error('Error updating WhatsApp:', e);
+        console.error(e);
         showToast('Failed to update WhatsApp numbers.', 'error');
     }
 };
