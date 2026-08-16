@@ -723,7 +723,12 @@ window.openWishlist = function() {
 // ============================================================
 window.orderWhatsApp = function(name, price) {
     const msg = `Assalam-o-Alaikum!%0A%0AI want to order this product:%0AProduct: ${encodeURIComponent(name)}%0APrice: Rs. ${price}%0AQuantity: 1%0A%0APlease confirm my order.`;
-    const whatsappNumbers = settings.whatsapp || ['+923226193390', '+923217352159'];
+    const whatsappNumbers = [
+  '+923226193390',
+  '+923217352159',
+  '+923259551915',
+  '+923166675686'
+];
     window.open(`https://wa.me/${whatsappNumbers[0].replace('+','')}?text=${msg}`, '_blank');
     if (whatsappNumbers[1]) {
         setTimeout(() => window.open(`https://wa.me/${whatsappNumbers[1].replace('+','')}?text=${msg}`, '_blank'), 400);
