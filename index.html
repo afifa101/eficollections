@@ -139,6 +139,52 @@
         .product-modal .modal-details .meta { color: #7a6a6a; font-size: 14px; }
         .product-modal .modal-details .meta strong { color: #2d1f1f; }
         .product-modal .modal-close { position: absolute; top: 15px; right: 15px; z-index: 10; background: rgba(255,255,255,0.9); }
+        .whatsapp-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,215,215,0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .whatsapp-option:hover {
+            border-color: #25d366;
+            box-shadow: 0 4px 15px rgba(37,211,102,0.15);
+            transform: translateX(4px);
+        }
+        .whatsapp-option .info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .whatsapp-option .info .label {
+            font-weight: 600;
+            color: #2d1f1f;
+            font-size: 14px;
+        }
+        .whatsapp-option .info .number {
+            color: #5a4a4a;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .whatsapp-option .btn-order-wa {
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .whatsapp-option .btn-order-wa:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+        }
         @media (max-width: 768px) {
             .product-modal .modal-body { grid-template-columns: 1fr; }
             .product-modal .modal-image { min-height: 200px; padding: 15px; }
@@ -274,7 +320,7 @@
         <div class="copyright">© <span id="currentYear"></span> EFI Collection. All rights reserved. | Made with ❤️ by Afifa Shakeel</div>
     </div>
 </footer>
-<a href="https://wa.me/923226193390?text=Assalam-o-Alaikum!%20I%20want%20to%20order%20a%20product" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i> Order Now</a>
+<a href="javascript:void(0)" onclick="openWhatsAppFloat()" class="whatsapp-float"><i class="fab fa-whatsapp"></i> Order Now</a>
 <div class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
 
 <!-- MODALS -->
@@ -284,6 +330,16 @@
 <div class="modal product-modal" id="productModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('productModal')"><i class="fas fa-times"></i></button><div class="modal-body"><div class="modal-image" id="productModalImage"></div><div class="modal-details" id="productModalDetails"></div></div></div></div>
 <div class="modal" id="aboutModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('aboutModal')"><i class="fas fa-times"></i></button><h2>👩 About EFI Collection</h2><div style="line-height:1.8;color:#4d3a3a;margin-top:15px;"><p><strong>Assalam-o-Alaikum!</strong></p><p>My name is <strong>Afifa Shakeel</strong>. I am from <strong>Okara</strong>, Pakistan.</p><p>If you want to buy any product, you can contact me on WhatsApp. I deal in premium quality products with reasonable prices.</p><br><p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> +92 322 6193390, +92 321 7352159</p><p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p></div></div></div>
 <div class="modal" id="contactModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('contactModal')"><i class="fas fa-times"></i></button><h2>📞 Contact Us</h2><div style="margin-top:15px;"><p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/923226193390" target="_blank">+92 322 6193390</a>, <a href="https://wa.me/923217352159" target="_blank">+92 321 7352159</a></p><p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p><p><i class="fas fa-map-marker-alt" style="color:#b35e5e;"></i> <strong>Location:</strong> Okara, Pakistan</p><br><p><strong>Business Hours:</strong><br>Monday - Saturday: 10:00 AM - 8:00 PM<br>Sunday: Closed</p></div></div></div>
+
+<!-- WhatsApp Order Modal -->
+<div class="modal" id="whatsappModal">
+    <div class="modal-content" style="max-width:500px;">
+        <button class="modal-close" onclick="closeModal('whatsappModal')"><i class="fas fa-times"></i></button>
+        <h2 style="text-align:center;color:#2d1f1f;">📱 Choose Sales Team</h2>
+        <p style="text-align:center;color:#5a4a4a;margin:10px 0 20px 0;">Select a representative to place your order</p>
+        <div id="whatsappNumbersContainer" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+</div>
 
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
@@ -341,6 +397,18 @@ window.getDownloadURL = getDownloadURL;
 window.deleteObject = deleteObject;
 
 console.log('🔥 Firebase initialized');
+
+// ============================================================
+// PREVENT AUTO-CREATION - ADD THIS FLAG
+// ============================================================
+if (!sessionStorage.getItem('efi_initialized')) {
+    console.log('🔄 First load - initializing...');
+    sessionStorage.setItem('efi_initialized', 'true');
+    sessionStorage.setItem('efi_categories_seeded', 'false');
+    sessionStorage.setItem('efi_products_seeded', 'false');
+} else {
+    console.log('⏭️ Already initialized, skipping seed...');
+}
 
 // ============================================================
 // GLOBAL STATE
@@ -405,11 +473,14 @@ async function loadSettings() {
 
 async function loadCategories() {
     try {
+        console.log('🔄 Loading categories...');
         const q = query(collection(db, 'categories'), orderBy('name'));
         const snapshot = await getDocs(q);
         categories = [];
         snapshot.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
-        if (categories.length === 0) {
+        
+        if (categories.length === 0 && sessionStorage.getItem('efi_categories_seeded') !== 'true') {
+            console.log('🌱 Seeding default categories...');
             const defaults = [
                 { name: 'Clothes', icon: 'fa-tshirt', sub: ['Men', 'Women', 'Kids'] },
                 { name: 'Shoes', icon: 'fa-shoe-prints', sub: ['Men', 'Women'] },
@@ -422,10 +493,12 @@ async function loadCategories() {
                 { name: 'Home & Kitchen', icon: 'fa-utensils', sub: [] }
             ];
             for (const c of defaults) await addDoc(collection(db, 'categories'), c);
-            await loadCategories();
+            sessionStorage.setItem('efi_categories_seeded', 'true');
+            const newSnapshot = await getDocs(q);
+            categories = [];
+            newSnapshot.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
         }
         renderCategories();
-        // Update category filter dropdown
         const sel = document.getElementById('categoryFilter');
         if (sel) {
             const current = sel.value;
@@ -438,11 +511,14 @@ async function loadCategories() {
 
 async function loadProducts() {
     try {
+        console.log('🔄 Loading products...');
         const q = query(collection(db, 'products'), orderBy('name'));
         const snapshot = await getDocs(q);
         products = [];
         snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
-        if (products.length === 0) {
+        
+        if (products.length === 0 && sessionStorage.getItem('efi_products_seeded') !== 'true') {
+            console.log('🌱 Seeding default products...');
             const defaults = [
                 { name: 'Summer Floral Dress', price: 49, discount_price: 69, stock: 15, category: 'Clothes', sizes: 'S,M,L,XL', colors: 'Pink,White', rating: 0, reviews_count: 0, description: 'Elegant floral summer dress.', media: ['https://picsum.photos/400/400?random=1'] },
                 { name: 'Leather Sneakers', price: 79, discount_price: null, stock: 8, category: 'Shoes', sizes: '6,7,8,9,10,11', colors: 'Black,Brown', rating: 0, reviews_count: 0, description: 'Premium leather sneakers.', media: ['https://picsum.photos/400/400?random=2'] },
@@ -451,7 +527,10 @@ async function loadProducts() {
                 { name: 'Wireless Earbuds', price: 45, discount_price: 65, stock: 25, category: 'Electronics', sizes: 'One Size', colors: 'White,Black', rating: 0, reviews_count: 0, description: 'Premium wireless earbuds.', media: ['https://picsum.photos/400/400?random=5'] }
             ];
             for (const p of defaults) await addDoc(collection(db, 'products'), p);
-            await loadProducts();
+            sessionStorage.setItem('efi_products_seeded', 'true');
+            const newSnapshot = await getDocs(q);
+            products = [];
+            newSnapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
         }
         if (currentCategory) renderCategoryProducts(currentCategory);
         updateCartCount();
@@ -499,7 +578,7 @@ function productCardHTML(p) {
             <div class="price">Rs. ${p.price}${p.discount_price ? `<span class="old-price">Rs. ${p.discount_price}</span>` : ''}</div>
             <span class="stock ${p.stock > 0 ? 'in-stock' : 'out-stock'}">${p.stock > 0 ? '✅ In Stock' : '❌ Out of Stock'}</span>
             <div class="product-actions" onclick="event.stopPropagation();">
-                <button class="btn-whatsapp" onclick="orderWhatsApp('${p.name}', ${p.price})"><i class="fab fa-whatsapp"></i> Order</button>
+                <button class="btn-whatsapp" onclick="showWhatsAppModal({ product: '${p.name}', price: ${p.price}, quantity: 1, size: 'Please specify', color: 'Please specify', customerName: 'Your Name', phone: 'Your Phone', address: 'Your Address', city: 'Your City', total: ${p.price} })"><i class="fab fa-whatsapp"></i> Order</button>
                 <button onclick="toggleWishlist('${p.id}')" style="background:#f5f0ee;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;color:${inWishlist ? '#e53935' : '#3d2a2a'};"><i class="fas ${inWishlist ? 'fa-heart' : 'fa-heart'}"></i></button>
                 <button onclick="addToCart('${p.id}')" style="background:#fadadd;border:none;padding:5px 12px;border-radius:20px;cursor:pointer;"><i class="fas fa-shopping-cart"></i></button>
             </div>
@@ -592,7 +671,7 @@ window.openProductModal = function(id) {
         <div class="meta"><strong>Sizes:</strong> ${p.sizes || 'Various'}</div>
         <div class="meta"><strong>Colors:</strong> ${p.colors || 'Various'}</div>
         <div class="product-actions">
-            <button class="btn-whatsapp" onclick="orderWhatsApp('${p.name}', ${p.price})"><i class="fab fa-whatsapp"></i> Order Now</button>
+            <button class="btn-whatsapp" onclick="showWhatsAppModal({ product: '${p.name}', price: ${p.price}, quantity: 1, size: 'Please specify', color: 'Please specify', customerName: 'Your Name', phone: 'Your Phone', address: 'Your Address', city: 'Your City', total: ${p.price} })"><i class="fab fa-whatsapp"></i> Order Now</button>
             <button onclick="addToCart('${p.id}');closeModal('productModal');" style="background:#fadadd;border:none;padding:8px 20px;border-radius:30px;font-weight:600;cursor:pointer;"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
             <button onclick="toggleWishlist('${p.id}');openProductModal('${p.id}');" style="background:#f5f0ee;border:none;padding:8px 20px;border-radius:30px;font-weight:600;cursor:pointer;color:${inWishlist ? '#e53935' : '#3d2a2a'};"><i class="fas ${inWishlist ? 'fa-heart' : 'fa-heart'}"></i> ${inWishlist ? 'Remove' : 'Wishlist'}</button>
         </div>
@@ -675,23 +754,38 @@ window.removeFromCart = function(id) {
 };
 
 window.proceedToCheckout = function() {
-    if (cart.length === 0) return showToast('Cart is empty!', 'error');
+    if (cart.length === 0) {
+        showToast('Cart is empty!', 'error');
+        return;
+    }
     document.getElementById('cartModal').style.display = 'none';
-    let msg = 'Assalam-o-Alaikum.\n\nI want to place an order.\n\nProducts:\n';
+    
     let total = 0;
+    let cartItems = [];
     cart.forEach(c => {
         const p = products.find(x => x.id === c.id);
-        if (p) { msg += `${p.name} × ${c.qty} = Rs. ${p.price * c.qty}\n`; total += p.price * c.qty; }
+        if (p) {
+            cartItems.push(`${p.name} × ${c.qty}`);
+            total += p.price * c.qty;
+        }
     });
-    msg += `\nTotal: Rs. ${total}\n\nPlease confirm my order.`;
+    
+    const orderData = {
+        product: cartItems.join(' | '),
+        price: total,
+        quantity: 'See details',
+        size: 'Various',
+        color: 'Various',
+        customerName: '[Your Name]',
+        phone: '[Your Phone]',
+        address: '[Your Address]',
+        city: '[Your City]',
+        total: total
+    };
+    
     cart = [];
     updateCartCount();
-    const whatsappNumbers = settings.whatsapp || ['+923226193390', '+923217352159'];
-    window.open(`https://wa.me/${whatsappNumbers[0].replace('+','')}?text=${encodeURIComponent(msg)}`, '_blank');
-    if (whatsappNumbers[1]) {
-        setTimeout(() => window.open(`https://wa.me/${whatsappNumbers[1].replace('+','')}?text=${encodeURIComponent(msg)}`, '_blank'), 500);
-    }
-    showToast('Order placed! Check WhatsApp.', 'success');
+    showWhatsAppModal(orderData);
 };
 
 // ============================================================
@@ -719,20 +813,71 @@ window.openWishlist = function() {
 };
 
 // ============================================================
-// WHATSAPP ORDER
+// WHATSAPP ORDER - NEW PROFESSIONAL POPUP
 // ============================================================
-window.orderWhatsApp = function(name, price) {
-    const msg = `Assalam-o-Alaikum!%0A%0AI want to order this product:%0AProduct: ${encodeURIComponent(name)}%0APrice: Rs. ${price}%0AQuantity: 1%0A%0APlease confirm my order.`;
-    const whatsappNumbers = [
-  '+923226193390',
-  '+923217352159',
-  '+923259551915',
-  '+923166675686'
-];
-    window.open(`https://wa.me/${whatsappNumbers[0].replace('+','')}?text=${msg}`, '_blank');
-    if (whatsappNumbers[1]) {
-        setTimeout(() => window.open(`https://wa.me/${whatsappNumbers[1].replace('+','')}?text=${msg}`, '_blank'), 400);
+window.showWhatsAppModal = function(orderData) {
+    const modal = document.getElementById('whatsappModal');
+    const container = document.getElementById('whatsappNumbersContainer');
+    
+    const numbers = settings.whatsapp || [
+        '+923226193390',
+        '+923259551915',
+        '+923217352159',
+        '+923166675686'
+    ];
+    
+    const message = `Assalam-o-Alaikum!%0A%0AI want to place an order:%0A%0A📦 Product: ${orderData.product}%0A💰 Price: Rs. ${orderData.price}%0A📦 Quantity: ${orderData.quantity}%0A📐 Size: ${orderData.size}%0A🎨 Color: ${orderData.color}%0A%0A👤 Name: ${orderData.customerName}%0A📱 Phone: ${orderData.phone}%0A📍 Address: ${orderData.address}%0A🏙️ City: ${orderData.city}%0A%0A💵 Total Amount: Rs. ${orderData.total}%0A%0APlease confirm my order. JazakAllah!`;
+    
+    container.innerHTML = numbers.map((num, index) => {
+        let clean = num.replace(/[^0-9]/g, '');
+        if (clean.startsWith('92')) {
+            clean = clean.substring(2);
+        }
+        return `
+            <div class="whatsapp-option">
+                <div class="info">
+                    <span class="label">Sales Team ${index + 1}</span>
+                    <span class="number">${num}</span>
+                </div>
+                <button class="btn-order-wa" onclick="sendWhatsAppOrder('${clean}', '${message}')">
+                    <i class="fab fa-whatsapp"></i> Order Here
+                </button>
+            </div>
+        `;
+    }).join('');
+    
+    modal.style.display = 'flex';
+};
+
+window.sendWhatsAppOrder = function(number, message) {
+    if (!number) {
+        showToast('Invalid phone number', 'error');
+        return;
     }
+    const cleanNumber = number.replace(/[^0-9]/g, '');
+    if (!cleanNumber || cleanNumber.length < 10) {
+        showToast('Invalid phone number format', 'error');
+        return;
+    }
+    window.open(`https://wa.me/${cleanNumber}?text=${message}`, '_blank');
+    closeModal('whatsappModal');
+    showToast('Order sent via WhatsApp! ✅', 'success');
+};
+
+window.openWhatsAppFloat = function() {
+    const orderData = {
+        product: 'General Inquiry',
+        price: 0,
+        quantity: 1,
+        size: 'N/A',
+        color: 'N/A',
+        customerName: '[Your Name]',
+        phone: '[Your Phone]',
+        address: '[Your Address]',
+        city: '[Your City]',
+        total: 0
+    };
+    showWhatsAppModal(orderData);
 };
 
 // ============================================================
@@ -855,7 +1000,7 @@ window.openAdmin = async function() {
             <h3>⚙️ Settings</h3>
             <div>
                 <label>WhatsApp Numbers (one per line)</label>
-                <textarea id="adminWhatsapp" rows="3" style="width:100%;padding:10px;border:2px solid #f0e6e6;border-radius:12px;">${(settings.whatsapp || ['+923226193390', '+923217352159']).join('\n')}</textarea>
+                <textarea id="adminWhatsapp" rows="4" style="width:100%;padding:10px;border:2px solid #f0e6e6;border-radius:12px;">${(settings.whatsapp || ['+923226193390', '+923217352159']).join('\n')}</textarea>
                 <button class="btn-pink" onclick="adminUpdateWhatsapp()" style="margin-top:5px;">Update WhatsApp</button>
             </div>
         </div>
@@ -914,68 +1059,238 @@ window.renderUploadPreview = function() {
     `).join('');
 };
 
+// ============================================================
+// FIXED: PRODUCT SAVE FUNCTION
+// ============================================================
 window.saveProduct = async function() {
-    const name = document.getElementById('pName').value.trim();
-    const price = parseFloat(document.getElementById('pPrice').value);
-    const discount = document.getElementById('pDiscount').value.trim();
-    const stock = parseInt(document.getElementById('pStock').value) || 10;
-    const category = document.getElementById('pCategory').value;
-    const sizes = document.getElementById('pSizes').value.trim();
-    const colors = document.getElementById('pColors').value.trim();
-    const desc = document.getElementById('pDesc').value.trim();
-    
-    if (!name || !price || !desc) return showToast('Fill Name, Price & Description!', 'error');
-    if (uploadFiles.length === 0) return showToast('Upload at least one image!', 'error');
-    const imageUrls = [];
-
-for (const file of uploadFiles) {
-  if (file.startsWith("data:")) {
-    const blob = await (await fetch(file)).blob();
-
-    const storageRef = ref(
-      storage,
-      "products/" + Date.now() + "_" + Math.random().toString(36).slice(2)
-    );
-
-    await uploadBytes(storageRef, blob);
-    imageUrls.push(await getDownloadURL(storageRef));
-  } else {
-    imageUrls.push(file);
-  }
-}
-    
-    const productData = { 
-        name, 
-        price, 
-        discount_price: discount ? parseFloat(discount) : null, 
-        stock, 
-        category, 
-        sizes: sizes || 'Various', 
-        colors: colors || 'Various', 
-        rating: 0, 
-        reviews_count: 0, 
-        description: desc, 
-        media: imageUrls,
-        createdAt: serverTimestamp()
-    };
+    console.log('🔄 PUBLISH PRODUCT CLICKED');
     
     try {
+        // Get form values
+        const name = document.getElementById('pName').value.trim();
+        const price = parseFloat(document.getElementById('pPrice').value);
+        const discount = document.getElementById('pDiscount').value.trim();
+        const stock = parseInt(document.getElementById('pStock').value) || 10;
+        const category = document.getElementById('pCategory').value;
+        const sizes = document.getElementById('pSizes').value.trim();
+        const colors = document.getElementById('pColors').value.trim();
+        const desc = document.getElementById('pDesc').value.trim();
+        
+        console.log('📝 Form Data:', { name, price, discount, stock, category, sizes, colors, desc });
+        console.log('📸 Upload Files:', uploadFiles.length);
+        
+        // VALIDATION
+        if (!name) { 
+            showToast('❌ Please enter product name!', 'error'); 
+            return; 
+        }
+        if (!price || isNaN(price) || price <= 0) { 
+            showToast('❌ Please enter a valid price!', 'error'); 
+            return; 
+        }
+        if (!desc) { 
+            showToast('❌ Please enter product description!', 'error'); 
+            return; 
+        }
+        if (uploadFiles.length === 0) { 
+            showToast('❌ Please upload at least one image!', 'error'); 
+            return; 
+        }
+        
+        showToast('📤 Uploading product... Please wait', 'info');
+        
+        // UPLOAD IMAGES ONE BY ONE
+        const imageUrls = [];
+        
+        for (let i = 0; i < uploadFiles.length; i++) {
+            const file = uploadFiles[i];
+            console.log(`📤 Uploading image ${i+1}/${uploadFiles.length}...`);
+            
+            try {
+                let imageUrl;
+                
+                if (file.startsWith("data:")) {
+                    // Convert base64 to blob
+                    const response = await fetch(file);
+                    const blob = await response.blob();
+                    
+                    // Create unique filename
+                    const timestamp = Date.now();
+                    const randomId = Math.random().toString(36).substring(2, 8);
+                    const fileName = `products/${timestamp}_${randomId}_${i}.jpg`;
+                    
+                    // Upload to Firebase Storage
+                    const storageRef = ref(storage, fileName);
+                    console.log('📤 Uploading to:', fileName);
+                    
+                    await uploadBytes(storageRef, blob);
+                    console.log('✅ Upload successful');
+                    
+                    // Get download URL
+                    imageUrl = await getDownloadURL(storageRef);
+                    console.log('📥 Download URL:', imageUrl);
+                    
+                } else {
+                    // Already a URL
+                    imageUrl = file;
+                }
+                
+                imageUrls.push(imageUrl);
+                
+            } catch (error) {
+                console.error(`❌ Image ${i+1} upload failed:`, error);
+                showToast(`❌ Failed to upload image ${i+1}: ${error.message}`, 'error');
+                return; // Stop everything
+            }
+        }
+        
+        console.log('✅ All images uploaded:', imageUrls.length);
+        
+        // PREPARE PRODUCT DATA
+        const productData = { 
+            name: name,
+            price: price,
+            discount_price: discount ? parseFloat(discount) : null,
+            stock: stock,
+            category: category,
+            sizes: sizes || 'Various',
+            colors: colors || 'Various',
+            rating: 0,
+            reviews_count: 0,
+            description: desc,
+            media: imageUrls,
+            createdAt: serverTimestamp()
+        };
+        
+        console.log('📦 Product Data:', productData);
+        
+        // SAVE TO FIRESTORE
         if (editingProductId) {
             await updateDoc(doc(db, 'products', editingProductId), productData);
             editingProductId = null;
-            showToast('Product updated!', 'success');
+            showToast('✅ Product updated successfully!', 'success');
         } else {
-            await addDoc(collection(db, 'products'), productData);
-            showToast('Product added!', 'success');
+            const docRef = await addDoc(collection(db, 'products'), productData);
+            console.log('✅ Product saved with ID:', docRef.id);
+            showToast('✅ Product published successfully!', 'success');
         }
+        
+        // RESET FORM
         uploadFiles = [];
         document.getElementById('uploadPreview').innerHTML = '';
+        document.getElementById('pName').value = '';
+        document.getElementById('pPrice').value = '';
+        document.getElementById('pDiscount').value = '';
+        document.getElementById('pStock').value = '10';
+        document.getElementById('pSizes').value = '';
+        document.getElementById('pColors').value = '';
+        document.getElementById('pDesc').value = '';
+        
+        // RELOAD PRODUCTS
         await loadProducts();
-        if (currentCategory) renderCategoryProducts(currentCategory);
+        if (currentCategory) {
+            renderCategoryProducts(currentCategory);
+        }
+        
+        // REFRESH ADMIN PANEL
+        setTimeout(() => openAdmin(), 500);
+        
+    } catch (error) {
+        console.error('❌ CRITICAL ERROR:', error);
+        showToast(`❌ Failed: ${error.message}`, 'error');
+    }
+};
+
+// ============================================================
+// FIXED: DELETE PRODUCT
+// ============================================================
+window.deleteProduct = async function(id) {
+    if (!confirm('Delete this product?')) return;
+    try {
+        products = products.filter(p => p.id !== id);
+        if (currentCategory) {
+            renderCategoryProducts(currentCategory);
+        }
+        await deleteDoc(doc(db, 'products', id));
+        showToast('✅ Product deleted successfully!', 'success');
+        await loadProducts();
+        if (currentCategory) {
+            renderCategoryProducts(currentCategory);
+        }
+        if (document.getElementById('adminModal').style.display === 'flex') {
+            openAdmin();
+        }
+    } catch (e) {
+        console.error('Error deleting product:', e);
+        showToast('Failed to delete product.', 'error');
+        await loadProducts();
+        if (currentCategory) {
+            renderCategoryProducts(currentCategory);
+        }
+    }
+};
+
+// ============================================================
+// FIXED: DELETE CATEGORY
+// ============================================================
+window.adminDeleteCategory = async function(id) {
+    if (!confirm('Delete this category?')) return;
+    try {
+        categories = categories.filter(c => c.id !== id);
+        renderCategories();
+        await deleteDoc(doc(db, 'categories', id));
+        showToast('✅ Category deleted successfully!', 'success');
+        await loadCategories();
+        if (document.getElementById('adminModal').style.display === 'flex') {
+            openAdmin();
+        }
+    } catch (e) {
+        console.error('Error deleting category:', e);
+        showToast('Failed to delete category.', 'error');
+        await loadCategories();
+    }
+};
+
+// ============================================================
+// FIXED: ADMIN ADD CATEGORY
+// ============================================================
+window.adminAddCategory = async function() {
+    const name = document.getElementById('adminCatName').value.trim();
+    if (!name) return showToast('Enter category name', 'error');
+    try {
+        if (categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+            showToast('Category already exists!', 'error');
+            return;
+        }
+        await addDoc(collection(db, 'categories'), { name, icon: 'fa-tag', sub: [] });
+        showToast('✅ Category added!', 'success');
+        document.getElementById('adminCatName').value = '';
+        await loadCategories();
         openAdmin();
     } catch (e) {
-        console.error('Error saving product:', e);
-        showToast('Failed to save product: ' + e.message, 'error');
+        console.error(e);
+        showToast('Failed to add category.', 'error');
+    }
+};
+
+// ============================================================
+// FIXED: ADMIN UPDATE WHATSAPP
+// ============================================================
+window.adminUpdateWhatsapp = async function() {
+    const numbers = document.getElementById('adminWhatsapp').value.split('\n').filter(n => n.trim());
+    if (numbers.length === 0) {
+        showToast('Please enter at least one WhatsApp number', 'error');
+        return;
+    }
+    try {
+        await setDoc(doc(db, 'settings', 'app'), { whatsapp: numbers });
+        settings.whatsapp = numbers;
+        window.settings = settings;
+        showToast('✅ WhatsApp numbers updated successfully!', 'success');
+        setTimeout(() => openAdmin(), 500);
+    } catch (e) {
+        console.error('Error updating WhatsApp:', e);
+        showToast('Failed to update WhatsApp numbers.', 'error');
     }
 };
 
@@ -988,56 +1303,6 @@ window.cancelEdit = function() {
     editingProductId = null;
     uploadFiles = [];
     openAdmin();
-};
-
-window.deleteProduct = async function(id) {
-    if (!confirm('Delete this product?')) return;
-    try {
-        await deleteDoc(doc(db, 'products', id));
-        showToast('Product deleted!', 'success');
-        await loadProducts();
-        if (currentCategory) renderCategoryProducts(currentCategory);
-        openAdmin();
-    } catch (e) {
-        console.error('Error deleting product:', e);
-        showToast('Failed to delete product.', 'error');
-    }
-};
-
-window.adminAddCategory = async function() {
-    const name = document.getElementById('adminCatName').value.trim();
-    if (!name) return showToast('Enter category name', 'error');
-    try {
-        await addDoc(collection(db, 'categories'), { name, icon: 'fa-tag', sub: [] });
-        showToast('Category added!', 'success');
-        document.getElementById('adminCatName').value = '';
-        await loadCategories();
-        openAdmin();
-    } catch (e) { console.error(e); showToast('Failed to add category.', 'error'); }
-};
-
-window.adminDeleteCategory = async function(id) {
-    if (!confirm('Delete this category?')) return;
-    try {
-        await deleteDoc(doc(db, 'categories', id));
-        showToast('Category deleted!', 'success');
-        await loadCategories();
-        openAdmin();
-    } catch (e) { console.error(e); showToast('Failed to delete category.', 'error'); }
-};
-
-window.adminUpdateWhatsapp = async function() {
-    const numbers = document.getElementById('adminWhatsapp').value.split('\n').filter(n => n.trim());
-    try {
-        await setDoc(doc(db, 'settings', 'app'), { whatsapp: numbers });
-        settings.whatsapp = numbers;
-        window.settings = settings;
-        showToast('WhatsApp numbers updated!', 'success');
-        openAdmin();
-    } catch (e) {
-        console.error(e);
-        showToast('Failed to update settings.', 'error');
-    }
 };
 
 // ============================================================
@@ -1068,6 +1333,7 @@ window.filterCategoryProducts = filterCategoryProducts;
 
 console.log('✅ EFI Collections ready!');
 console.log('🔑 Admin Password: Efi@Efi$$$');
+console.log('📱 WhatsApp numbers loaded:', settings.whatsapp);
 </script>
 </body>
 </html>
