@@ -926,6 +926,23 @@ window.saveProduct = async function() {
     
     if (!name || !price || !desc) return showToast('Fill Name, Price & Description!', 'error');
     if (uploadFiles.length === 0) return showToast('Upload at least one image!', 'error');
+    const imageUrls = [];
+
+for (const file of uploadFiles) {
+  if (file.startsWith("data:")) {
+    const blob = await (await fetch(file)).blob();
+
+    const storageRef = ref(
+      storage,
+      "products/" + Date.now() + "_" + Math.random().toString(36).slice(2)
+    );
+
+    await uploadBytes(storageRef, blob);
+    imageUrls.push(await getDownloadURL(storageRef));
+  } else {
+    imageUrls.push(file);
+  }
+}
     
     const productData = { 
         name, 
@@ -938,7 +955,7 @@ window.saveProduct = async function() {
         rating: 0, 
         reviews_count: 0, 
         description: desc, 
-        media: uploadFiles.slice(),
+        media: imageUrls,
         createdAt: serverTimestamp()
     };
     
