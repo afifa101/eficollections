@@ -492,7 +492,7 @@ let isAdminLoggedIn = false;
 let currentCategory = '';
 let uploadFiles = [];
 let editingProductId = null;
-let settings = { whatsapp: ['+923226193390', '+923259551915'] };
+let settings = { whatsapp: ['+923226193390', '+923259551915', '+923217352159', '+923166675686'] };
 const ADMIN_PASSWORD = 'Efi@Efi$$$';
 let selectedRating = 0;
 let reviewSubmitting = false;
@@ -537,8 +537,8 @@ async function loadSettings() {
             settings = docSnap.data();
             window.settings = settings;
         } else {
-            await setDoc(docRef, { whatsapp: ['+923226193390', '+923259551915'] });
-            settings = { whatsapp: ['+923226193390', '+923259551915'] };
+            await setDoc(docRef, { whatsapp: ['+923226193390', '+923259551915', '+923217352159', '+923166675686'] });
+            settings = { whatsapp: ['+923226193390', '+923259551915', '+923217352159', '+923166675686'] };
         }
     } catch (e) { console.error('Error loading settings:', e); }
 }
@@ -846,14 +846,18 @@ window.openWishlist = function() {
 };
 
 // ============================================================
-// WHATSAPP ORDER - FIXED (Only 2 Numbers)
+// WHATSAPP ORDER - ALL 4 NUMBERS FIXED
 // ============================================================
 window.showWhatsAppModal = function(orderData) {
     const modal = document.getElementById('whatsappModal');
     const container = document.getElementById('whatsappNumbersContainer');
     
-    // Only 2 WhatsApp numbers - FIXED
-    const numbers = ['+923226193390', '+923259551915'];
+    const numbers = [
+        '+923226193390',
+        '+923259551915',
+        '+923217352159',
+        '+923166675686'
+    ];
     
     const message = `Assalam-o-Alaikum!%0A%0AI want to place an order:%0A%0A📦 Product: ${orderData.product}%0A💰 Price: Rs. ${orderData.price}%0A📦 Quantity: ${orderData.quantity}%0A📐 Size: ${orderData.size}%0A🎨 Color: ${orderData.color}%0A%0A👤 Name: ${orderData.customerName}%0A📱 Phone: ${orderData.phone}%0A📍 Address: ${orderData.address}%0A🏙️ City: ${orderData.city}%0A%0A💵 Total Amount: Rs. ${orderData.total}%0A%0APlease confirm my order. JazakAllah!`;
     
@@ -862,6 +866,13 @@ window.showWhatsAppModal = function(orderData) {
         if (clean.startsWith('92')) {
             clean = clean.substring(2);
         }
+        if (clean.length === 10) {
+            clean = '92' + clean;
+        }
+        if (clean.length === 11 && clean.startsWith('0')) {
+            clean = '92' + clean.substring(1);
+        }
+        
         return `
             <div class="whatsapp-option">
                 <div class="info">
@@ -883,11 +894,20 @@ window.sendWhatsAppOrder = function(number, message) {
         showToast('Invalid phone number', 'error');
         return;
     }
-    const cleanNumber = number.replace(/[^0-9]/g, '');
-    if (!cleanNumber || cleanNumber.length < 10) {
+    
+    let cleanNumber = number.replace(/[^0-9]/g, '');
+    if (cleanNumber.startsWith('0')) {
+        cleanNumber = cleanNumber.substring(1);
+    }
+    if (!cleanNumber.startsWith('92')) {
+        cleanNumber = '92' + cleanNumber;
+    }
+    if (cleanNumber.length < 10 || cleanNumber.length > 15) {
         showToast('Invalid phone number format', 'error');
         return;
     }
+    
+    console.log('📱 Opening WhatsApp for:', cleanNumber);
     window.open(`https://wa.me/${cleanNumber}?text=${message}`, '_blank');
     closeModal('whatsappModal');
     showToast('Order sent via WhatsApp! ✅', 'success');
@@ -910,7 +930,7 @@ window.openWhatsAppFloat = function() {
 };
 
 // ============================================================
-// REVIEW SYSTEM - COMPLETE
+// REVIEW SYSTEM - COMPLETE FIXED
 // ============================================================
 
 // Star Rating
@@ -972,23 +992,38 @@ window.submitReview = async function(e) {
     }
 };
 
-// Load Approved Reviews
+// ============================================================
+// LOAD APPROVED REVIEWS - FIXED (No Index Required!)
+// ============================================================
 async function loadApprovedReviews() {
     try {
-        const q = query(collection(db, 'reviews'), where('status', '==', 'approved'), orderBy('createdAt', 'desc'));
+        console.log('🔄 Loading approved reviews...');
+        // ✅ SIMPLE QUERY - No index needed!
+        const q = query(collection(db, 'reviews'), where('status', '==', 'approved'));
         const snapshot = await getDocs(q);
         const approvedReviews = [];
         snapshot.forEach(doc => approvedReviews.push({ id: doc.id, ...doc.data() }));
+        
+        // Sort by date (newest first) - in JavaScript
+        approvedReviews.sort((a, b) => {
+            const dateA = a.createdAt?.toDate?.() || new Date(0);
+            const dateB = b.createdAt?.toDate?.() || new Date(0);
+            return dateB - dateA;
+        });
+        
+        console.log('✅ Approved reviews loaded:', approvedReviews.length);
         renderApprovedReviews(approvedReviews);
         updateReviewStats(approvedReviews);
     } catch (error) {
         console.error('❌ Load reviews error:', error);
+        showToast('Failed to load reviews: ' + error.message, 'error');
     }
 }
 
 function renderApprovedReviews(reviews) {
     const container = document.getElementById('reviewsContainer');
     if (!container) return;
+    
     if (reviews.length === 0) {
         container.innerHTML = `<div style="text-align:center;padding:40px;color:#999;background:white;border-radius:16px;border:1px solid rgba(255,215,215,0.15);">
             <i class="fas fa-star" style="font-size:40px;color:#fadadd;display:block;margin-bottom:10px;"></i>
@@ -997,6 +1032,7 @@ function renderApprovedReviews(reviews) {
         </div>`;
         return;
     }
+    
     container.innerHTML = reviews.map(r => `
         <div class="review-card">
             <div class="stars">${'⭐'.repeat(Math.min(5, r.rating || 0))}</div>
@@ -1029,42 +1065,76 @@ function updateReviewStats(reviews) {
         <div class="total">${total} ${total === 1 ? 'Review' : 'Reviews'}</div>`;
 }
 
-// Admin Reviews
+// ============================================================
+// ADMIN REVIEWS - FIXED (No Index Required!)
+// ============================================================
 let adminReviewTab = 'pending';
 
 window.openAdminReviews = function() {
+    console.log('📋 Opening admin reviews...');
     document.getElementById('adminReviewsModal').style.display = 'flex';
     loadAdminReviews('pending');
 };
 
 window.loadAdminReviews = async function(status) {
     adminReviewTab = status;
+    console.log('🔄 Loading admin reviews with status:', status);
+    
     document.getElementById('tabPending').style.color = status === 'pending' ? '#b35e5e' : '#5a4a4a';
     document.getElementById('tabPending').style.borderBottomColor = status === 'pending' ? '#b35e5e' : 'transparent';
     document.getElementById('tabApproved').style.color = status === 'approved' ? '#b35e5e' : '#5a4a4a';
     document.getElementById('tabApproved').style.borderBottomColor = status === 'approved' ? '#b35e5e' : 'transparent';
+    
     try {
-        const q = query(collection(db, 'reviews'), where('status', '==', status), orderBy('createdAt', 'desc'));
+        // ✅ SIMPLE QUERY - No orderBy (No index needed!)
+        const q = query(collection(db, 'reviews'), where('status', '==', status));
         const snapshot = await getDocs(q);
         const reviews = [];
         snapshot.forEach(doc => reviews.push({ id: doc.id, ...doc.data() }));
+        
+        // ✅ Sort in JavaScript (newest first)
+        reviews.sort((a, b) => {
+            const dateA = a.createdAt?.toDate?.() || new Date(0);
+            const dateB = b.createdAt?.toDate?.() || new Date(0);
+            return dateB - dateA;
+        });
+        
+        console.log('✅ Admin reviews loaded:', reviews.length);
         renderAdminReviews(reviews, status);
         updateAdminStats();
+        
     } catch (error) {
         console.error('❌ Load admin reviews error:', error);
-        showToast('Failed to load reviews', 'error');
+        showToast('Failed to load reviews: ' + error.message, 'error');
+        document.getElementById('adminReviewsContainer').innerHTML = `
+            <div style="text-align:center;padding:40px;color:#c62828;">
+                <i class="fas fa-exclamation-circle" style="font-size:40px;display:block;margin-bottom:10px;"></i>
+                <p>Error loading reviews. Please check console.</p>
+                <button onclick="loadAdminReviews('${status}')" class="btn-pink" style="margin-top:10px;">Retry</button>
+            </div>
+        `;
     }
 };
 
 function renderAdminReviews(reviews, status) {
     const container = document.getElementById('adminReviewsContainer');
-    if (reviews.length === 0) {
-        container.innerHTML = `<div style="text-align:center;padding:40px;color:#999;">
-            <i class="fas fa-inbox" style="font-size:40px;display:block;margin-bottom:10px;color:#ddd;"></i>
-            <p>No ${status} reviews</p>
-        </div>`;
+    
+    if (!container) {
+        console.error('❌ Container not found!');
         return;
     }
+    
+    if (reviews.length === 0) {
+        container.innerHTML = `
+            <div style="text-align:center;padding:40px;color:#999;">
+                <i class="fas fa-inbox" style="font-size:40px;display:block;margin-bottom:10px;color:#ddd;"></i>
+                <p>No ${status} reviews</p>
+                <p style="font-size:12px;color:#bbb;margin-top:5px;">Try submitting a review from the website first.</p>
+            </div>
+        `;
+        return;
+    }
+    
     container.innerHTML = reviews.map(r => `
         <div class="admin-review-card">
             <div class="header">
@@ -1282,7 +1352,7 @@ window.openAdmin = async function() {
             <h3>⚙️ Settings</h3>
             <div>
                 <label>WhatsApp Numbers (one per line)</label>
-                <textarea id="adminWhatsapp" rows="4" style="width:100%;padding:10px;border:2px solid #f0e6e6;border-radius:12px;">${(settings.whatsapp || ['+923226193390', '+923259551915']).join('\n')}</textarea>
+                <textarea id="adminWhatsapp" rows="4" style="width:100%;padding:10px;border:2px solid #f0e6e6;border-radius:12px;">${(settings.whatsapp || ['+923226193390', '+923259551915', '+923217352159', '+923166675686']).join('\n')}</textarea>
                 <button class="btn-pink" onclick="adminUpdateWhatsapp()" style="margin-top:5px;">Update WhatsApp</button>
             </div>
         </div>
@@ -1506,10 +1576,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         m.addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; });
     });
     // Load reviews after page loads
-    setTimeout(() => loadApprovedReviews(), 1000);
+    setTimeout(() => loadApprovedReviews(), 1500);
 });
 
-// Expose functions
 window.renderCategoryProducts = renderCategoryProducts;
 window.updateCartCount = updateCartCount;
 window.loadProducts = loadProducts;
