@@ -26,118 +26,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        <head>
-    <meta charset="UTF-8">
-    <title>EFI Collections</title>
-    
-    <style>
-        /* Home Page Reviews Section Style */
-        .reviews-section {
-            padding: 20px;
-            background: #fff;
-            margin-top: 10px;
-        }
-        .reviews-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .reviews-header i {
-            font-size: 28px;
-            color: #2d1f1f;
-        }
-        .review-card {
-            background: #fff;
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            border: 1px solid #f5f0f0;
-        }
-        .review-card .review-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .review-card .reviewer-name {
-            font-weight: 600;
-            font-size: 16px;
-            color: #2d1f1f;
-        }
-        .review-card .review-stars {
-            color: #f1c40f;
-            font-size: 16px;
-            letter-spacing: 2px;
-        }
-        .review-card .review-date {
-            font-size: 12px;
-            color: #a89b9b;
-        }
-        .review-card .review-msg {
-            color: #5a4a4a;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-top: 5px;
-        }
-        .no-reviews-state {
-            background: #fff;
-            border: 1px solid #f5f0f0;
-            border-radius: 16px;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-        }
-        .no-reviews-state i {
-            font-size: 45px;
-            color: #f5d6d6;
-            margin-bottom: 12px;
-        }
-        .no-reviews-state h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #a89b9b;
-            margin: 0 0 5px 0;
-        }
-        .no-reviews-state p {
-            font-size: 14px;
-            color: #d0c5c5;
-            margin: 0;
-        }
-        .modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-}
-.modal.active {
-    display: flex;
-}
-.modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-.modal-close {
-    position: absolute;
-    top: 15px; right: 20px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #2d1f1f;
-}
-    </style>
-    
-</head>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #fcf9f7; color: #1e1e2a; }
         .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
@@ -186,11 +74,25 @@
         .why-item i { font-size: 36px; color: #b35e5e; display: block; margin-bottom: 8px; }
         .why-item h4 { color: #2d1f1f; }
         .why-item p { color: #5a4a4a; font-size: 14px; }
+        
+        /* === REVIEWS SECTION CSS === */
         .reviews-section { margin: 30px 0; }
+        .reviews-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .reviews-header i { font-size: 28px; color: #2d1f1f; }
         .review-card { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 15px; border: 1px solid rgba(255,215,215,0.15); }
         .review-card .stars { color: #f9b115; }
         .review-card .name { font-weight: 600; }
-        .review-card .verified { background: #e8f5e9; color: #2e7d32; font-size: 11px; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-left: 8px; }
+        .no-reviews-state { background: white; border: 1px solid rgba(255,215,215,0.15); border-radius: 16px; padding: 40px 20px; text-align: center; }
+        .no-reviews-state i { font-size: 40px; color: #fadadd; display: block; margin-bottom: 10px; }
+        .no-reviews-state h3 { font-size: 18px; color: #999; margin: 0 0 5px 0; }
+        .no-reviews-state p { font-size: 14px; color: #bbb; margin: 0; }
+        /* === REVIEW MODAL CSS === */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 28px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative; }
+        .modal-close { position: sticky; top: 0; float: right; background: #f5f0ee; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; }
+        /* === END REVIEW CSS === */
+        
         .newsletter-section { background: #fff9c4; border-radius: 30px; padding: 40px; text-align: center; margin: 30px 0; }
         .newsletter-section .newsletter-input { display: flex; gap: 10px; max-width: 450px; margin: 15px auto; flex-wrap: wrap; justify-content: center; }
         .newsletter-section .newsletter-input input { flex: 1; padding: 12px 18px; border-radius: 30px; border: 1px solid #e0d0d0; min-width:200px; background: white; }
@@ -207,9 +109,6 @@
         .back-top { position: fixed; bottom: 100px; right: 20px; background: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #f0e6e6; color: #3d2a2a; cursor: pointer; z-index: 90; }
         .back-top:hover { background: #fadadd; }
         #adminIcon { display: none !important; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: white; border-radius: 28px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative; }
-        .modal-close { position: sticky; top: 0; float: right; background: #f5f0ee; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; }
         .admin-form input, .admin-form textarea, .admin-form select { width: 100%; padding: 10px 14px; border: 2px solid #f0e6e6; border-radius: 12px; font-size: 14px; margin-bottom: 10px; }
         .admin-form input:focus, .admin-form textarea:focus, .admin-form select:focus { border-color: #b35e5e; outline: none; }
         .admin-form textarea { min-height: 60px; resize: vertical; }
@@ -356,20 +255,32 @@
                 <div class="why-item"><i class="fas fa-wallet"></i><h4>Best Prices</h4><p>Affordable premium products</p></div>
             </div>
         </section>
+        
+        <!-- ========================================== -->
+        <!-- CUSTOMER REVIEWS SECTION -->
+        <!-- ========================================== -->
         <section class="reviews-section">
-    <div class="reviews-header">
-        <i class="far fa-comment-dots"></i>
-        <h2 style="font-size:22px; font-weight:700; margin:0;">Customer Reviews</h2>
-    </div>
-    
-    <div id="reviewsList" class="reviews-list-container">
-        <div class="no-reviews-state">
-            <i class="fas fa-star"></i>
-            <h3>No reviews yet</h3>
-            <p>Be the first to order and share your experience!</p>
-        </div>
-    </div>
+            <div class="reviews-header">
+                <i class="far fa-comment-dots"></i>
+                <h2 style="font-size:22px; font-weight:700; margin:0;">Customer Reviews</h2>
+            </div>
+            
+            <div id="reviewsList" class="reviews-list-container">
+                <div class="no-reviews-state">
+                    <i class="fas fa-star"></i>
+                    <h3>No reviews yet</h3>
+                    <p>Be the first to order and share your experience!</p>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:20px;">
+                <button onclick="openReviewModal()" style="background:#b35e5e; color:white; border:none; padding:12px 30px; border-radius:30px; font-size:15px; font-weight:600; cursor:pointer;">
+                    ✍️ Write a Review
+                </button>
+            </div>
         </section>
+        <!-- ========================================== -->
+        
         <section class="newsletter-section">
             <h3>📧 Subscribe to Our Newsletter</h3>
             <p>Get updates on new arrivals and exclusive offers</p>
@@ -453,15 +364,26 @@
 <div class="modal" id="aboutModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('aboutModal')"><i class="fas fa-times"></i></button><h2>👩 About EFI Collection</h2><div style="line-height:1.8;color:#4d3a3a;margin-top:15px;"><p><strong>Assalam-o-Alaikum!</strong></p><p>My name is <strong>Afifa Shakeel</strong>. I am from <strong>Okara</strong>, Pakistan.</p><p>If you want to buy any product, you can contact me on WhatsApp. I deal in premium quality products with reasonable prices.</p><br><p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> +92 322 6193390, +92 321 7352159</p><p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p></div></div></div>
 <div class="modal" id="contactModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('contactModal')"><i class="fas fa-times"></i></button><h2>📞 Contact Us</h2><div style="margin-top:15px;"><p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/923226193390" target="_blank">+92 322 6193390</a>, <a href="https://wa.me/923217352159" target="_blank">+92 321 7352159</a></p><p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p><p><i class="fas fa-map-marker-alt" style="color:#b35e5e;"></i> <strong>Location:</strong> Okara, Pakistan</p><br><p><strong>Business Hours:</strong><br>Monday - Saturday: 10:00 AM - 8:00 PM<br>Sunday: Closed</p></div></div></div>
 
- <!-- Review Form Modal -->
+<!-- WhatsApp Order Modal -->
+<div class="modal" id="whatsappModal">
+    <div class="modal-content" style="max-width:500px;">
+        <button class="modal-close" onclick="closeModal('whatsappModal')"><i class="fas fa-times"></i></button>
+        <h2 style="text-align:center;color:#2d1f1f;">📱 Choose Sales Team</h2>
+        <p style="text-align:center;color:#5a4a4a;margin:10px 0 20px 0;">Select a representative to place your order</p>
+        <div id="whatsappNumbersContainer" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- REVIEW FORM MODAL -->
+<!-- ========================================== -->
 <div class="modal" id="reviewModal">
     <div class="modal-content" style="max-width:550px;">
-        <button class="modal-close" onclick="closeModal('reviewModal')"><i class="fas fa-times"></i></button>
+        <button class="modal-close" onclick="closeReviewModal()"><i class="fas fa-times"></i></button>
         <h2 style="text-align:center;color:#2d1f1f;margin-bottom:5px;">✍️ Write a Review</h2>
         <p style="text-align:center;color:#5a4a4a;margin-bottom:20px;">Share your experience with our product</p>
         
         <form id="reviewForm" onsubmit="submitReview(event)">
-            <!-- Star Rating -->
             <div style="text-align:center;margin-bottom:20px;">
                 <label style="display:block;font-weight:600;color:#2d1f1f;margin-bottom:8px;">Your Rating *</label>
                 <div id="starRating" style="display:flex;justify-content:center;gap:8px;font-size:32px;cursor:pointer;">
@@ -475,19 +397,16 @@
                 <input type="hidden" id="selectedRating" value="0">
             </div>
             
-            <!-- Name -->
             <div style="margin-bottom:15px;">
                 <label style="display:block;font-weight:600;color:#2d1f1f;margin-bottom:5px;">Full Name *</label>
                 <input type="text" id="reviewName" placeholder="Enter your full name" style="width:100%;padding:12px 16px;border:2px solid #f0e6e6;border-radius:12px;font-size:14px;" required>
             </div>
             
-            <!-- Email -->
             <div style="margin-bottom:15px;">
                 <label style="display:block;font-weight:600;color:#2d1f1f;margin-bottom:5px;">Email Address *</label>
                 <input type="email" id="reviewEmail" placeholder="Enter your email" style="width:100%;padding:12px 16px;border:2px solid #f0e6e6;border-radius:12px;font-size:14px;" required>
             </div>
             
-            <!-- Review Message -->
             <div style="margin-bottom:20px;">
                 <label style="display:block;font-weight:600;color:#2d1f1f;margin-bottom:5px;">Your Review *</label>
                 <textarea id="reviewMessage" rows="4" placeholder="Tell us about your experience..." style="width:100%;padding:12px 16px;border:2px solid #f0e6e6;border-radius:12px;font-size:14px;resize:vertical;" required></textarea>
@@ -498,16 +417,8 @@
             </button>
         </form>
     </div>
-</div>           
-<!-- WhatsApp Order Modal -->
-<div class="modal" id="whatsappModal">
-    <div class="modal-content" style="max-width:500px;">
-        <button class="modal-close" onclick="closeModal('whatsappModal')"><i class="fas fa-times"></i></button>
-        <h2 style="text-align:center;color:#2d1f1f;">📱 Choose Sales Team</h2>
-        <p style="text-align:center;color:#5a4a4a;margin:10px 0 20px 0;">Select a representative to place your order</p>
-        <div id="whatsappNumbersContainer" style="display:flex;flex-direction:column;gap:12px;"></div>
-    </div>
 </div>
+<!-- ========================================== -->
 
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
@@ -565,57 +476,6 @@ window.getDownloadURL = getDownloadURL;
 window.deleteObject = deleteObject;
 
 console.log('🔥 Firebase initialized');
-// ==== HOME PAGE REVIEWS LOAD FUNCTION ====
-function loadUserReviews() {
-    const reviewsList = document.getElementById('reviewsList');
-    if(!reviewsList) return;
-
-    const q = query(collection(db, "reviews"), where("status", "==", "approved"));
-    
-    onSnapshot(q, (snapshot) => {
-        if (snapshot.empty) {
-            reviewsList.innerHTML = `
-                <div class="no-reviews-state">
-                    <i class="fas fa-star"></i>
-                    <h3>No reviews yet</h3>
-                    <p>Be the first to order and share your experience!</p>
-                </div>
-            `;
-            return;
-        }
-
-        let html = '';
-        snapshot.forEach((doc) => {
-            const review = doc.data();
-            let starsStr = '';
-            for(let i=0; i<5; i++) {
-                starsStr += i < review.rating ? '★' : '☆';
-            }
-            const reviewDate = review.timestamp ? new Date(review.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
-            
-            html += `
-                <div class="review-card">
-                    <div class="review-top">
-                        <div class="reviewer-name">${review.name}</div>
-                        <div class="review-date">${reviewDate}</div>
-                    </div>
-                    <div class="review-stars">${starsStr}</div>
-                    <div class="review-msg">${review.message}</div>
-                </div>
-            `;
-        });
-        reviewsList.innerHTML = html;
-    }, (error) => {
-        console.error("Error loading reviews: ", error);
-        reviewsList.innerHTML = `<p style="color:red;text-align:center;">Failed to load reviews.</p>`;
-    });
-}
-
-// ==== RUN ON PAGE LOAD ====
-document.addEventListener('DOMContentLoaded', () => {
-    loadUserReviews(); 
-});
-    
 
 // ============================================================
 // PREVENT AUTO-CREATION
@@ -758,7 +618,7 @@ async function loadProducts() {
 
 async function loadReviews() {
     try {
-        const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'));
+        const q = query(collection(db, 'reviews'), orderBy('timestamp', 'desc'));
         const snapshot = await getDocs(q);
         reviews = [];
         snapshot.forEach(doc => reviews.push({ id: doc.id, ...doc.data() }));
@@ -834,27 +694,112 @@ window.filterCategoryProducts = function() {
     }
 };
 
+// ============================================================
+// REVIEW FUNCTIONS
+// ============================================================
 function renderReviews() {
-    const container = document.getElementById('reviewsContainer');
+    const container = document.getElementById('reviewsList');
     if (!container) return;
-    const shown = reviews.slice(0, 6);
-    if (shown.length === 0) {
-        container.innerHTML = `<div style="text-align:center;padding:30px;color:#999;background:white;border-radius:16px;border:1px solid rgba(255,215,215,0.15);">
-            <i class="fas fa-star" style="font-size:40px;color:#fadadd;display:block;margin-bottom:10px;"></i>
-            <p><strong>No reviews yet</strong></p>
-            <p style="font-size:14px;color:#bbb;">Be the first to order and share your experience!</p>
-        </div>`;
+    
+    const approvedReviews = reviews.filter(r => r.status === 'approved');
+    
+    if (approvedReviews.length === 0) {
+        container.innerHTML = `
+            <div class="no-reviews-state">
+                <i class="fas fa-star"></i>
+                <h3>No reviews yet</h3>
+                <p>Be the first to order and share your experience!</p>
+            </div>
+        `;
         return;
     }
-    container.innerHTML = shown.map(r => `
-        <div class="review-card">
-            <div class="stars">${'⭐'.repeat(Math.min(5, r.rating || 0))}</div>
-            <p style="margin:5px 0;">${r.comment}</p>
-            <span class="name">– ${r.customer_name}</span>
-            ${r.verified ? `<span class="verified"><i class="fas fa-check-circle"></i> Verified Buyer</span>` : ''}
-        </div>
-    `).join('');
+    
+    let html = '';
+    approvedReviews.slice(0, 10).forEach(r => {
+        let starsStr = '';
+        const rating = Math.min(5, r.rating || 0);
+        for(let i=0; i<5; i++) starsStr += i < rating ? '⭐' : '☆';
+        
+        let dateStr = '';
+        if(r.timestamp) {
+            try {
+                const d = new Date(r.timestamp);
+                if(!isNaN(d)) dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            } catch(e) {}
+        }
+        
+        html += `
+            <div class="review-card">
+                <div class="review-top">
+                    <span class="name">${r.name || 'Anonymous'}</span>
+                    <span style="font-size:12px;color:#a89b9b;">${dateStr}</span>
+                </div>
+                <div style="color:#f1c40f;font-size:14px;letter-spacing:1px;margin-bottom:4px;">${starsStr}</div>
+                <p style="color:#5a4a4a; font-size:14px; margin-top:5px;">${r.message || ''}</p>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
 }
+
+function openReviewModal() {
+    document.getElementById('reviewModal').style.display = 'flex';
+}
+window.openReviewModal = openReviewModal;
+
+function closeReviewModal() {
+    document.getElementById('reviewModal').style.display = 'none';
+}
+window.closeReviewModal = closeReviewModal;
+
+let currentRating = 0;
+function setRating(val) {
+    currentRating = val;
+    document.getElementById('selectedRating').value = val;
+    const stars = document.querySelectorAll('#starRating i');
+    stars.forEach((star, index) => {
+        star.style.color = index < val ? '#f1c40f' : '#ddd';
+    });
+    document.getElementById('ratingText').innerText = val > 0 ? `${val} Star${val > 1 ? 's' : ''}` : 'Select a rating';
+}
+window.setRating = setRating;
+
+async function submitReview(e) {
+    e.preventDefault();
+    const rating = parseInt(document.getElementById('selectedRating').value);
+    if(rating === 0) { alert('Please select a star rating!'); return; }
+
+    const btn = document.getElementById('submitReviewBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    btn.disabled = true;
+
+    const reviewData = {
+        name: document.getElementById('reviewName').value.trim(),
+        email: document.getElementById('reviewEmail').value.trim(),
+        message: document.getElementById('reviewMessage').value.trim(),
+        rating: rating,
+        status: 'pending',
+        timestamp: new Date().toISOString()
+    };
+
+    try {
+        await addDoc(collection(db, 'reviews'), reviewData);
+        alert('✅ Review submitted successfully! Waiting for admin approval.');
+        document.getElementById('reviewForm').reset();
+        setRating(0);
+        closeReviewModal();
+        showToast('Review submitted for approval!', 'success');
+    } catch (error) {
+        console.error("Error adding review: ", error);
+        alert('❌ Error submitting review. Please try again.');
+    } finally {
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Review';
+        btn.disabled = false;
+    }
+}
+window.submitReview = submitReview;
+
+// ============================================================
 
 function updateCartCount() {
     const countEl = document.getElementById('cartCount');
@@ -1032,7 +977,7 @@ window.openWishlist = function() {
 };
 
 // ============================================================
-// WHATSAPP ORDER - PROFESSIONAL POPUP
+// WHATSAPP ORDER - FIXED VERSION (92 country code issue resolved)
 // ============================================================
 window.showWhatsAppModal = function(orderData) {
     const modal = document.getElementById('whatsappModal');
@@ -1048,10 +993,8 @@ window.showWhatsAppModal = function(orderData) {
     const message = `Assalam-o-Alaikum!%0A%0AI want to place an order:%0A%0A📦 Product: ${orderData.product}%0A💰 Price: Rs. ${orderData.price}%0A📦 Quantity: ${orderData.quantity}%0A📐 Size: ${orderData.size}%0A🎨 Color: ${orderData.color}%0A%0A👤 Name: ${orderData.customerName}%0A📱 Phone: ${orderData.phone}%0A📍 Address: ${orderData.address}%0A🏙️ City: ${orderData.city}%0A%0A💵 Total Amount: Rs. ${orderData.total}%0A%0APlease confirm my order. JazakAllah!`;
     
     container.innerHTML = numbers.map((num, index) => {
+        // FIXED: Removed the bug that stripped the '92' country code!
         let clean = num.replace(/[^0-9]/g, '');
-        if (clean.startsWith('92')) {
-            clean = clean.substring(2);
-        }
         return `
             <div class="whatsapp-option">
                 <div class="info">
@@ -1073,7 +1016,15 @@ window.sendWhatsAppOrder = function(number, message) {
         showToast('Invalid phone number', 'error');
         return;
     }
-    const cleanNumber = number.replace(/[^0-9]/g, '');
+    let cleanNumber = number.replace(/[^0-9]/g, '');
+    
+    // Auto-format Pakistan numbers (e.g. 0325... -> 92325...)
+    if (cleanNumber.length === 11 && cleanNumber.startsWith('0')) {
+        cleanNumber = '92' + cleanNumber.substring(1);
+    } else if (cleanNumber.length === 10 && !cleanNumber.startsWith('92')) {
+        cleanNumber = '92' + cleanNumber;
+    }
+    
     if (!cleanNumber || cleanNumber.length < 10) {
         showToast('Invalid phone number format', 'error');
         return;
@@ -1279,7 +1230,7 @@ window.renderUploadPreview = function() {
 };
 
 // ============================================================
-// FIXED: PRODUCT SAVE FUNCTION - KAM KAREGA!
+// PRODUCT SAVE FUNCTION
 // ============================================================
 window.saveProduct = async function() {
     console.log('🔄 PUBLISH PRODUCT CLICKED');
@@ -1294,7 +1245,6 @@ window.saveProduct = async function() {
         const colors = document.getElementById('pColors').value.trim();
         const desc = document.getElementById('pDesc').value.trim();
         
-        // Validation
         if (!name) { showToast('❌ Name likho!', 'error'); return; }
         if (!price || isNaN(price)) { showToast('❌ Price likho!', 'error'); return; }
         if (!desc) { showToast('❌ Description likho!', 'error'); return; }
@@ -1302,7 +1252,6 @@ window.saveProduct = async function() {
         
         showToast('📤 Product save ho raha hai...', 'info');
         
-        // Images compress karo (size chhoti)
         const compressedImages = [];
         for (let i = 0; i < Math.min(uploadFiles.length, 3); i++) {
             compressedImages.push(uploadFiles[i]);
@@ -1321,7 +1270,6 @@ window.saveProduct = async function() {
             createdAt: serverTimestamp()
         };
         
-        // Firestore mein save karo
         if (editingProductId) {
             await updateDoc(doc(db, 'products', editingProductId), productData);
             editingProductId = null;
@@ -1331,7 +1279,6 @@ window.saveProduct = async function() {
             showToast('✅ Product publish ho gaya!', 'success');
         }
         
-        // Form saaf karo
         uploadFiles = [];
         document.getElementById('uploadPreview').innerHTML = '';
         document.getElementById('pName').value = '';
@@ -1464,55 +1411,6 @@ window.filterCategoryProducts = filterCategoryProducts;
 console.log('✅ EFI Collections ready!');
 console.log('🔑 Admin Password: Efi@Efi$$$');
 console.log('📱 WhatsApp numbers loaded:', settings.whatsapp);
-    // ==== MODAL HELPERS ====
-function openModal(id) { document.getElementById(id).classList.add('active'); }
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-// ==== RATING LOGIC ====
-let currentRating = 0;
-function setRating(val) {
-    currentRating = val;
-    document.getElementById('selectedRating').value = val;
-    const stars = document.querySelectorAll('#starRating i');
-    stars.forEach((star, index) => {
-        star.style.color = index < val ? '#f1c40f' : '#ddd';
-    });
-    document.getElementById('ratingText').innerText = val > 0 ? `${val} Star${val > 1 ? 's' : ''}` : 'Select a rating';
-}
-
-// ==== SUBMIT REVIEW TO FIREBASE ====
-async function submitReview(e) {
-    e.preventDefault();
-    const rating = parseInt(document.getElementById('selectedRating').value);
-    if(rating === 0) { alert('Please select a star rating!'); return; }
-
-    const btn = document.getElementById('submitReviewBtn');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-    btn.disabled = true;
-
-    const reviewData = {
-        name: document.getElementById('reviewName').value,
-        email: document.getElementById('reviewEmail').value,
-        message: document.getElementById('reviewMessage').value,
-        rating: rating,
-        status: 'pending',
-        timestamp: new Date().toISOString()
-    };
-
-    try {
-        await addDoc(collection(db, "reviews"), reviewData);
-        alert('✅ Review submitted successfully! Waiting for admin approval.');
-        document.getElementById('reviewForm').reset();
-        setRating(0);
-        closeModal('reviewModal');
-    } catch (error) {
-        console.error("Error adding review: ", error);
-        alert('❌ Error submitting review. Please try again.');
-    } finally {
-        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Review';
-        btn.disabled = false;
-    }
-}
 </script>
 </body>
 </html>
