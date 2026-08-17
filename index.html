@@ -26,6 +26,118 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        <head>
+    <meta charset="UTF-8">
+    <title>EFI Collections</title>
+    
+    <style>
+        /* Home Page Reviews Section Style */
+        .reviews-section {
+            padding: 20px;
+            background: #fff;
+            margin-top: 10px;
+        }
+        .reviews-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .reviews-header i {
+            font-size: 28px;
+            color: #2d1f1f;
+        }
+        .review-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            border: 1px solid #f5f0f0;
+        }
+        .review-card .review-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .review-card .reviewer-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2d1f1f;
+        }
+        .review-card .review-stars {
+            color: #f1c40f;
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+        .review-card .review-date {
+            font-size: 12px;
+            color: #a89b9b;
+        }
+        .review-card .review-msg {
+            color: #5a4a4a;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 5px;
+        }
+        .no-reviews-state {
+            background: #fff;
+            border: 1px solid #f5f0f0;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .no-reviews-state i {
+            font-size: 45px;
+            color: #f5d6d6;
+            margin-bottom: 12px;
+        }
+        .no-reviews-state h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #a89b9b;
+            margin: 0 0 5px 0;
+        }
+        .no-reviews-state p {
+            font-size: 14px;
+            color: #d0c5c5;
+            margin: 0;
+        }
+        .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+.modal.active {
+    display: flex;
+}
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.modal-close {
+    position: absolute;
+    top: 15px; right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #2d1f1f;
+}
+    </style>
+    
+</head>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #fcf9f7; color: #1e1e2a; }
         .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
@@ -245,8 +357,18 @@
             </div>
         </section>
         <section class="reviews-section">
-            <h2 class="section-title">💬 Customer Reviews</h2>
-            <div id="reviewsContainer"></div>
+    <div class="reviews-header">
+        <i class="far fa-comment-dots"></i>
+        <h2 style="font-size:22px; font-weight:700; margin:0;">Customer Reviews</h2>
+    </div>
+    
+    <div id="reviewsList" class="reviews-list-container">
+        <div class="no-reviews-state">
+            <i class="fas fa-star"></i>
+            <h3>No reviews yet</h3>
+            <p>Be the first to order and share your experience!</p>
+        </div>
+    </div>
         </section>
         <section class="newsletter-section">
             <h3>📧 Subscribe to Our Newsletter</h3>
@@ -331,6 +453,52 @@
 <div class="modal" id="aboutModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('aboutModal')"><i class="fas fa-times"></i></button><h2>👩 About EFI Collection</h2><div style="line-height:1.8;color:#4d3a3a;margin-top:15px;"><p><strong>Assalam-o-Alaikum!</strong></p><p>My name is <strong>Afifa Shakeel</strong>. I am from <strong>Okara</strong>, Pakistan.</p><p>If you want to buy any product, you can contact me on WhatsApp. I deal in premium quality products with reasonable prices.</p><br><p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> +92 322 6193390, +92 321 7352159</p><p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p></div></div></div>
 <div class="modal" id="contactModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('contactModal')"><i class="fas fa-times"></i></button><h2>📞 Contact Us</h2><div style="margin-top:15px;"><p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <strong>WhatsApp:</strong> <a href="https://wa.me/923226193390" target="_blank">+92 322 6193390</a>, <a href="https://wa.me/923217352159" target="_blank">+92 321 7352159</a></p><p><i class="fas fa-envelope" style="color:#ea4335;"></i> <strong>Email:</strong> efivlogging@gmail.com</p><p><i class="fas fa-map-marker-alt" style="color:#b35e5e;"></i> <strong>Location:</strong> Okara, Pakistan</p><br><p><strong>Business Hours:</strong><br>Monday - Saturday: 10:00 AM - 8:00 PM<br>Sunday: Closed</p></div></div></div>
 
+ <!-- Review Form Modal -->
+<div class="modal" id="reviewModal">
+    <div class="modal-content" style="max-width:550px;">
+        <button class="modal-close" onclick="closeModal('reviewModal')"><i class="fas fa-times"></i></button>
+        <h2 style="text-align:center;color:#2d1f1f;margin-bottom:5px;">✍️ Write a Review</h2>
+        <p style="text-align:center;color:#5a4a4a;margin-bottom:20px;">Share your experience with our product</p>
+        
+        <form id="reviewForm" onsubmit="submitReview(event)">
+            <!-- Star Rating -->
+            <div style="text-align:center;margin-bottom:20px;">
+                <label style="display:block;font-weight:600;color:#2d1f1f;margin-bottom:8px;">Your Rating *</label>
+                <div id="starRating" style="display:flex;justify-content:center;gap:8px;font-size:32px;cursor:pointer;">
+                    <i class="fas fa-star" data-value="1" style="color:#ddd;transition:all 0.2s;" onclick="setRating(1)"></i>
+                    <i class="fas fa-star" data-value="2" style="color:#ddd;transition:all 0.2s;" onclick="setRating(2)"></i>
+                    <i class="fas fa-star" data-value="3" style="color:#ddd;transition:all 0.2s;" onclick="setRating(3)"></i>
+                    <i class="fas fa-star" data-value="4" style="color:#ddd;transition:all 0.2s;" onclick="setRating(4)"></i>
+                    <i class="fas fa-star" data-value="5" style="color:#ddd;transition:all 0.2s;" onclick="setRating(5)"></i>
+                </div>
+                <span id="ratingText" style="font-size:14px;color:#8a6e6e;">Select a rating</span>
+                <input type="hidden" id="selectedRating" value="0">
+            </div>
+            
+            <!-- Name -->
+            <div style="margin-bottom:15px;">
+                <label style="display:block;font-weight:600;color:#2d1f1f;margin-bottom:5px;">Full Name *</label>
+                <input type="text" id="reviewName" placeholder="Enter your full name" style="width:100%;padding:12px 16px;border:2px solid #f0e6e6;border-radius:12px;font-size:14px;" required>
+            </div>
+            
+            <!-- Email -->
+            <div style="margin-bottom:15px;">
+                <label style="display:block;font-weight:600;color:#2d1f1f;margin-bottom:5px;">Email Address *</label>
+                <input type="email" id="reviewEmail" placeholder="Enter your email" style="width:100%;padding:12px 16px;border:2px solid #f0e6e6;border-radius:12px;font-size:14px;" required>
+            </div>
+            
+            <!-- Review Message -->
+            <div style="margin-bottom:20px;">
+                <label style="display:block;font-weight:600;color:#2d1f1f;margin-bottom:5px;">Your Review *</label>
+                <textarea id="reviewMessage" rows="4" placeholder="Tell us about your experience..." style="width:100%;padding:12px 16px;border:2px solid #f0e6e6;border-radius:12px;font-size:14px;resize:vertical;" required></textarea>
+            </div>
+            
+            <button type="submit" id="submitReviewBtn" style="width:100%;padding:14px;font-size:16px;background:#b35e5e;color:white;border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;">
+                <i class="fas fa-paper-plane"></i> Submit Review
+            </button>
+        </form>
+    </div>
+</div>           
 <!-- WhatsApp Order Modal -->
 <div class="modal" id="whatsappModal">
     <div class="modal-content" style="max-width:500px;">
@@ -397,6 +565,57 @@ window.getDownloadURL = getDownloadURL;
 window.deleteObject = deleteObject;
 
 console.log('🔥 Firebase initialized');
+// ==== HOME PAGE REVIEWS LOAD FUNCTION ====
+function loadUserReviews() {
+    const reviewsList = document.getElementById('reviewsList');
+    if(!reviewsList) return;
+
+    const q = query(collection(db, "reviews"), where("status", "==", "approved"));
+    
+    onSnapshot(q, (snapshot) => {
+        if (snapshot.empty) {
+            reviewsList.innerHTML = `
+                <div class="no-reviews-state">
+                    <i class="fas fa-star"></i>
+                    <h3>No reviews yet</h3>
+                    <p>Be the first to order and share your experience!</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        snapshot.forEach((doc) => {
+            const review = doc.data();
+            let starsStr = '';
+            for(let i=0; i<5; i++) {
+                starsStr += i < review.rating ? '★' : '☆';
+            }
+            const reviewDate = review.timestamp ? new Date(review.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+            
+            html += `
+                <div class="review-card">
+                    <div class="review-top">
+                        <div class="reviewer-name">${review.name}</div>
+                        <div class="review-date">${reviewDate}</div>
+                    </div>
+                    <div class="review-stars">${starsStr}</div>
+                    <div class="review-msg">${review.message}</div>
+                </div>
+            `;
+        });
+        reviewsList.innerHTML = html;
+    }, (error) => {
+        console.error("Error loading reviews: ", error);
+        reviewsList.innerHTML = `<p style="color:red;text-align:center;">Failed to load reviews.</p>`;
+    });
+}
+
+// ==== RUN ON PAGE LOAD ====
+document.addEventListener('DOMContentLoaded', () => {
+    loadUserReviews(); 
+});
+    
 
 // ============================================================
 // PREVENT AUTO-CREATION
@@ -1245,6 +1464,55 @@ window.filterCategoryProducts = filterCategoryProducts;
 console.log('✅ EFI Collections ready!');
 console.log('🔑 Admin Password: Efi@Efi$$$');
 console.log('📱 WhatsApp numbers loaded:', settings.whatsapp);
+    // ==== MODAL HELPERS ====
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ==== RATING LOGIC ====
+let currentRating = 0;
+function setRating(val) {
+    currentRating = val;
+    document.getElementById('selectedRating').value = val;
+    const stars = document.querySelectorAll('#starRating i');
+    stars.forEach((star, index) => {
+        star.style.color = index < val ? '#f1c40f' : '#ddd';
+    });
+    document.getElementById('ratingText').innerText = val > 0 ? `${val} Star${val > 1 ? 's' : ''}` : 'Select a rating';
+}
+
+// ==== SUBMIT REVIEW TO FIREBASE ====
+async function submitReview(e) {
+    e.preventDefault();
+    const rating = parseInt(document.getElementById('selectedRating').value);
+    if(rating === 0) { alert('Please select a star rating!'); return; }
+
+    const btn = document.getElementById('submitReviewBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    btn.disabled = true;
+
+    const reviewData = {
+        name: document.getElementById('reviewName').value,
+        email: document.getElementById('reviewEmail').value,
+        message: document.getElementById('reviewMessage').value,
+        rating: rating,
+        status: 'pending',
+        timestamp: new Date().toISOString()
+    };
+
+    try {
+        await addDoc(collection(db, "reviews"), reviewData);
+        alert('✅ Review submitted successfully! Waiting for admin approval.');
+        document.getElementById('reviewForm').reset();
+        setRating(0);
+        closeModal('reviewModal');
+    } catch (error) {
+        console.error("Error adding review: ", error);
+        alert('❌ Error submitting review. Please try again.');
+    } finally {
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Review';
+        btn.disabled = false;
+    }
+}
 </script>
 </body>
 </html>
