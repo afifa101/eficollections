@@ -80,7 +80,6 @@
         .reviews-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
         .reviews-header i { font-size: 28px; color: #2d1f1f; }
         .review-card { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 15px; border: 1px solid rgba(255,215,215,0.15); }
-        .review-card .stars { color: #f9b115; }
         .review-card .name { font-weight: 600; }
         .no-reviews-state { background: white; border: 1px solid rgba(255,215,215,0.15); border-radius: 16px; padding: 40px 20px; text-align: center; }
         .no-reviews-state i { font-size: 40px; color: #fadadd; display: block; margin-bottom: 10px; }
@@ -257,7 +256,7 @@
         </section>
         
         <!-- ========================================== -->
-        <!-- CUSTOMER REVIEWS SECTION -->
+        <!-- CUSTOMER REVIEWS SECTION WITH BUTTON -->
         <!-- ========================================== -->
         <section class="reviews-section">
             <div class="reviews-header">
@@ -356,7 +355,7 @@
 <a href="javascript:void(0)" onclick="openWhatsAppFloat()" class="whatsapp-float"><i class="fab fa-whatsapp"></i> Order Now</a>
 <div class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
 
-<!-- MODALS -->
+<!-- STANDARD MODALS -->
 <div class="modal" id="cartModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('cartModal')"><i class="fas fa-times"></i></button><h2>🛒 Your Cart</h2><div id="cartItems"></div><div id="cartTotal" style="font-weight:700;font-size:20px;margin-top:15px;"></div><button class="btn-pink" onclick="proceedToCheckout()" style="width:100%;margin-top:10px;">Proceed to Checkout</button></div></div>
 <div class="modal" id="wishlistModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('wishlistModal')"><i class="fas fa-times"></i></button><h2>❤️ Wishlist</h2><div id="wishlistItems"></div></div></div>
 <div class="modal" id="adminModal"><div class="modal-content"><button class="modal-close" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></button><div id="adminBody"></div></div></div>
@@ -375,7 +374,7 @@
 </div>
 
 <!-- ========================================== -->
-<!-- REVIEW FORM MODAL -->
+<!-- NEW: REVIEW FORM MODAL -->
 <!-- ========================================== -->
 <div class="modal" id="reviewModal">
     <div class="modal-content" style="max-width:550px;">
@@ -695,7 +694,7 @@ window.filterCategoryProducts = function() {
 };
 
 // ============================================================
-// REVIEW FUNCTIONS
+// REVIEW FUNCTIONS (Display + Modal)
 // ============================================================
 function renderReviews() {
     const container = document.getElementById('reviewsList');
@@ -977,7 +976,7 @@ window.openWishlist = function() {
 };
 
 // ============================================================
-// WHATSAPP ORDER - FIXED VERSION (92 country code issue resolved)
+// WHATSAPP ORDER - FIXED VERSION
 // ============================================================
 window.showWhatsAppModal = function(orderData) {
     const modal = document.getElementById('whatsappModal');
@@ -993,7 +992,6 @@ window.showWhatsAppModal = function(orderData) {
     const message = `Assalam-o-Alaikum!%0A%0AI want to place an order:%0A%0A📦 Product: ${orderData.product}%0A💰 Price: Rs. ${orderData.price}%0A📦 Quantity: ${orderData.quantity}%0A📐 Size: ${orderData.size}%0A🎨 Color: ${orderData.color}%0A%0A👤 Name: ${orderData.customerName}%0A📱 Phone: ${orderData.phone}%0A📍 Address: ${orderData.address}%0A🏙️ City: ${orderData.city}%0A%0A💵 Total Amount: Rs. ${orderData.total}%0A%0APlease confirm my order. JazakAllah!`;
     
     container.innerHTML = numbers.map((num, index) => {
-        // FIXED: Removed the bug that stripped the '92' country code!
         let clean = num.replace(/[^0-9]/g, '');
         return `
             <div class="whatsapp-option">
@@ -1018,7 +1016,6 @@ window.sendWhatsAppOrder = function(number, message) {
     }
     let cleanNumber = number.replace(/[^0-9]/g, '');
     
-    // Auto-format Pakistan numbers (e.g. 0325... -> 92325...)
     if (cleanNumber.length === 11 && cleanNumber.startsWith('0')) {
         cleanNumber = '92' + cleanNumber.substring(1);
     } else if (cleanNumber.length === 10 && !cleanNumber.startsWith('92')) {
@@ -1073,7 +1070,7 @@ window.showAbout = function() { document.getElementById('aboutModal').style.disp
 window.showContact = function() { document.getElementById('contactModal').style.display = 'flex'; };
 
 // ============================================================
-// ADMIN - SIMPLE PASSWORD LOGIN
+// ADMIN - MODIFIED TO INCLUDE REVIEWS MANAGEMENT
 // ============================================================
 let logoClickCount = 0;
 let logoClickTimer = null;
@@ -1105,6 +1102,7 @@ window.openAdmin = async function() {
     await loadSettings();
     await loadCategories();
     await loadProducts();
+    await loadReviews();
     
     body.innerHTML = `
         <div class="admin-form">
@@ -1115,7 +1113,29 @@ window.openAdmin = async function() {
                 <div style="background:#f5f0ee;padding:15px;border-radius:12px;text-align:center;"><strong>${reviews.length}</strong><br>Reviews</div>
                 <div style="background:#f5f0ee;padding:15px;border-radius:12px;text-align:center;"><strong>${cart.length}</strong><br>Cart Items</div>
             </div>
-            <hr>
+            
+            <!-- Manage Reviews Tab -->
+            <hr style="margin:20px 0;">
+            <h3>⭐ Manage Reviews</h3>
+            <div id="adminReviewsContainer" style="max-height:300px;overflow-y:auto;border:1px solid #f0e6e6;border-radius:12px;padding:10px;background:#fff;">
+                ${reviews.filter(r => r.status === 'pending').length === 0 ? '<p style="color:#999;text-align:center;">No pending reviews.</p>' : 
+                reviews.filter(r => r.status === 'pending').map(r => `
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0e6e6;">
+                        <div>
+                            <strong>${r.name || 'Anonymous'}</strong> 
+                            <span style="color:#f1c40f;">${'⭐'.repeat(Math.min(5, r.rating || 0))}</span>
+                            <br><span style="font-size:13px;color:#5a4a4a;">${r.message || ''}</span>
+                        </div>
+                        <div>
+                            <button onclick="approveReview('${r.id}')" style="background:#e8f5e9;color:#2e7d32;border:none;padding:4px 12px;border-radius:12px;cursor:pointer;">Approve</button>
+                            <button onclick="rejectReview('${r.id}')" style="background:#fce4ec;color:#c62828;border:none;padding:4px 12px;border-radius:12px;cursor:pointer;">Reject</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <!-- End Reviews Tab -->
+
+            <hr style="margin:20px 0;">
             <h3>${editingProductId ? '✏️ Edit Product' : '➕ Add Product'}</h3>
             <div class="row">
                 <input type="text" id="pName" placeholder="Product Name *" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.name||'' : ''}">
@@ -1185,9 +1205,31 @@ window.openAdmin = async function() {
     modal.style.display = 'flex';
 };
 
+// ============================================================
+// ADMIN REVIEW ACTIONS
+// ============================================================
+window.approveReview = async function(id) {
+    try {
+        await updateDoc(doc(db, 'reviews', id), { status: 'approved' });
+        showToast('✅ Review approved!', 'success');
+        await loadReviews();
+        openAdmin();
+    } catch (e) { console.error(e); showToast('Failed to approve', 'error'); }
+};
+
+window.rejectReview = async function(id) {
+    try {
+        await updateDoc(doc(db, 'reviews', id), { status: 'rejected' });
+        showToast('⛔ Review rejected!', 'info');
+        await loadReviews();
+        openAdmin();
+    } catch (e) { console.error(e); showToast('Failed to reject', 'error'); }
+};
+
+// ============================================================
+
 window.adminLogin = function() {
     const pass = document.getElementById('adminPass').value;
-    
     if (pass === ADMIN_PASSWORD) {
         isAdminLoggedIn = true;
         document.getElementById('adminError').textContent = '';
@@ -1229,12 +1271,7 @@ window.renderUploadPreview = function() {
     `).join('');
 };
 
-// ============================================================
-// PRODUCT SAVE FUNCTION
-// ============================================================
 window.saveProduct = async function() {
-    console.log('🔄 PUBLISH PRODUCT CLICKED');
-    
     try {
         const name = document.getElementById('pName').value.trim();
         const price = parseFloat(document.getElementById('pPrice').value);
@@ -1244,32 +1281,21 @@ window.saveProduct = async function() {
         const sizes = document.getElementById('pSizes').value.trim();
         const colors = document.getElementById('pColors').value.trim();
         const desc = document.getElementById('pDesc').value.trim();
-        
         if (!name) { showToast('❌ Name likho!', 'error'); return; }
         if (!price || isNaN(price)) { showToast('❌ Price likho!', 'error'); return; }
         if (!desc) { showToast('❌ Description likho!', 'error'); return; }
         if (uploadFiles.length === 0) { showToast('❌ Image upload karo!', 'error'); return; }
         
         showToast('📤 Product save ho raha hai...', 'info');
-        
         const compressedImages = [];
         for (let i = 0; i < Math.min(uploadFiles.length, 3); i++) {
             compressedImages.push(uploadFiles[i]);
         }
-        
         const productData = {
-            name: name,
-            price: price,
-            discount_price: discount || null,
-            stock: stock,
-            category: category || 'Uncategorized',
-            sizes: sizes || 'Various',
-            colors: colors || 'Various',
-            description: desc,
-            media: compressedImages,
-            createdAt: serverTimestamp()
+            name: name, price: price, discount_price: discount || null, stock: stock,
+            category: category || 'Uncategorized', sizes: sizes || 'Various', colors: colors || 'Various',
+            description: desc, media: compressedImages, createdAt: serverTimestamp()
         };
-        
         if (editingProductId) {
             await updateDoc(doc(db, 'products', editingProductId), productData);
             editingProductId = null;
@@ -1278,7 +1304,6 @@ window.saveProduct = async function() {
             await addDoc(collection(db, 'products'), productData);
             showToast('✅ Product publish ho gaya!', 'success');
         }
-        
         uploadFiles = [];
         document.getElementById('uploadPreview').innerHTML = '';
         document.getElementById('pName').value = '';
@@ -1288,20 +1313,15 @@ window.saveProduct = async function() {
         document.getElementById('pSizes').value = '';
         document.getElementById('pColors').value = '';
         document.getElementById('pDesc').value = '';
-        
         await loadProducts();
         if (currentCategory) renderCategoryProducts(currentCategory);
         setTimeout(() => openAdmin(), 500);
-        
     } catch (error) {
         console.error('❌ Error:', error);
         showToast('❌ Failed: ' + error.message, 'error');
     }
 };
 
-// ============================================================
-// DELETE FUNCTIONS
-// ============================================================
 window.deleteProduct = async function(id) {
     if (!confirm('Delete this product?')) return;
     try {
@@ -1398,7 +1418,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 });
 
-// Expose functions
 window.renderCategoryProducts = renderCategoryProducts;
 window.renderReviews = renderReviews;
 window.updateCartCount = updateCartCount;
