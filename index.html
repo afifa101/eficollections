@@ -322,10 +322,10 @@
             </div>
             <div>
                 <h4>Categories</h4>
-                <a onclick="showCategory('Clothes')">Clothes</a>
-                <a onclick="showCategory('Shoes')">Shoes</a>
-                <a onclick="showCategory('Bags')">Bags</a>
-                <a onclick="showCategory('Electronics')">Electronics</a>
+                <a onclick="showCategory('Hijabs')">Hijabs</a>
+                <a onclick="showCategory('Abaya')">Abaya</a>
+                <a onclick="showCategory('Special Deals')">Special Deals</a>
+                <a onclick="showCategory('Tube Caps')">Tube Caps</a>
             </div>
             <div>
                 <h4>Contact</h4>
@@ -430,7 +430,11 @@
 // FIREBASE IMPORTS & CONFIG
 // ============================================================
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc, setDoc, getDoc, query, orderBy, where, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { 
+    getFirestore, collection, doc, getDocs, addDoc, deleteDoc, 
+    setDoc, getDoc, query, orderBy, where, updateDoc, 
+    serverTimestamp, writeBatch 
+} from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const firebaseConfig = {
@@ -461,24 +465,13 @@ window.orderBy = orderBy;
 window.where = where;
 window.updateDoc = updateDoc;
 window.serverTimestamp = serverTimestamp;
+window.writeBatch = writeBatch;
 window.ref = ref;
 window.uploadBytes = uploadBytes;
 window.getDownloadURL = getDownloadURL;
 window.deleteObject = deleteObject;
 
 console.log('🔥 Firebase initialized');
-
-// ============================================================
-// PREVENT AUTO-CREATION
-// ============================================================
-if (!sessionStorage.getItem('efi_initialized')) {
-    console.log('🔄 First load - initializing...');
-    sessionStorage.setItem('efi_initialized', 'true');
-    sessionStorage.setItem('efi_categories_seeded', 'false');
-    sessionStorage.setItem('efi_products_seeded', 'false');
-} else {
-    console.log('⏭️ Already initialized, skipping seed...');
-}
 
 // ============================================================
 // GLOBAL STATE
@@ -496,6 +489,11 @@ let settings = { whatsapp: ['+923226193390', '+923259551915', '+923217352159', '
 const ADMIN_PASSWORD = 'Efi@Efi$$$';
 let selectedRating = 0;
 let reviewSubmitting = false;
+let categoriesLoaded = false;
+let seedLock = false;
+
+// DEFAULT CATEGORIES (Sirf ye 4 initially)
+const DEFAULT_CATEGORIES = ['Hijabs', 'Abaya', 'Special Deals', 'Tube Caps'];
 
 window.categories = categories;
 window.products = products;
@@ -527,6 +525,78 @@ function closeModal(id) {
 window.closeModal = closeModal;
 
 // ============================================================
+// CLEAN CATEGORIES - ONLY KEEP DEFAULT, DELETE REST
+// ============================================================
+async function cleanCategories() {
+    try {
+        console.log('🧹 Cleaning categories - keeping only:', DEFAULT_CATEGORIES);
+        const q = query(collection(db, 'categories'));
+        const snapshot = await getDocs(q);
+        const allCats = [];
+        snapshot.forEach(doc => allCats.push({ id: doc.id, ...doc.data() }));
+        
+        console.log('📊 Total categories found:', allCats.length);
+        
+        let deletedCount = 0;
+        let keptCount = 0;
+        
+        // Use batch to delete multiple categories efficiently
+        const batch = writeBatch(db);
+        
+        // Track which default categories exist
+        const existingDefaultNames = new Set();
+        
+        for (const cat of allCats) {
+            // Check if this category is in the default list (case insensitive)
+            const isDefault = DEFAULT_CATEGORIES.some(
+                d => d.toLowerCase() === cat.name.toLowerCase()
+            );
+            
+            if (!isDefault) {
+                console.log(`🗑️ Deleting category: "${cat.name}" (not in default list)`);
+                const docRef = doc(db, 'categories', cat.id);
+                batch.delete(docRef);
+                deletedCount++;
+            } else {
+                console.log(`✅ Keeping category: "${cat.name}"`);
+                existingDefaultNames.add(cat.name.toLowerCase());
+                keptCount++;
+            }
+        }
+        
+        if (deletedCount > 0) {
+            await batch.commit();
+            console.log(`✅ Deleted ${deletedCount} unwanted categories, kept ${keptCount}`);
+            showToast(`✅ ${deletedCount} unwanted categories deleted!`, 'success');
+        } else {
+            console.log('✅ No unwanted categories found to delete');
+        }
+        
+        // Now add missing default categories
+        const missingCategories = DEFAULT_CATEGORIES.filter(
+            c => !existingDefaultNames.has(c.toLowerCase())
+        );
+        
+        if (missingCategories.length > 0) {
+            console.log('🌱 Adding missing categories:', missingCategories);
+            for (const catName of missingCategories) {
+                await addDoc(collection(db, 'categories'), {
+                    name: catName,
+                    icon: 'fa-tag',
+                    sub: []
+                });
+                console.log(`✅ Added category: "${catName}"`);
+            }
+            showToast(`✅ ${missingCategories.length} default categories added!`, 'success');
+        }
+        
+    } catch (e) {
+        console.error('❌ Error cleaning categories:', e);
+        showToast('Error cleaning categories: ' + e.message, 'error');
+    }
+}
+
+// ============================================================
 // FIREBASE LOAD FUNCTIONS
 // ============================================================
 async function loadSettings() {
@@ -545,33 +615,30 @@ async function loadSettings() {
 
 async function loadCategories() {
     try {
+        if (seedLock) return;
+        seedLock = true;
+        
         console.log('🔄 Loading categories...');
+        
+        // FIRST: Clean up unwanted categories (delete all except default)
+        await cleanCategories();
+        
+        // THEN: Load the cleaned categories
         const q = query(collection(db, 'categories'), orderBy('name'));
         const snapshot = await getDocs(q);
         categories = [];
         snapshot.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
         
-        if (categories.length === 0 && sessionStorage.getItem('efi_categories_seeded') !== 'true') {
-            console.log('🌱 Seeding default categories...');
-            const defaults = [
-                { name: 'Clothes', icon: 'fa-tshirt', sub: ['Men', 'Women', 'Kids'] },
-                { name: 'Shoes', icon: 'fa-shoe-prints', sub: ['Men', 'Women'] },
-                { name: 'Bags', icon: 'fa-bag-shopping', sub: [] },
-                { name: 'Cosmetics', icon: 'fa-mask', sub: [] },
-                { name: 'Jewellery', icon: 'fa-gem', sub: [] },
-                { name: 'Watches', icon: 'fa-clock', sub: [] },
-                { name: 'Electronics', icon: 'fa-laptop', sub: [] },
-                { name: 'Accessories', icon: 'fa-hat-cowboy', sub: [] },
-                { name: 'Home & Kitchen', icon: 'fa-utensils', sub: [] }
-            ];
-            for (const c of defaults) await addDoc(collection(db, 'categories'), c);
-            sessionStorage.setItem('efi_categories_seeded', 'true');
-            const newSnapshot = await getDocs(q);
-            categories = [];
-            newSnapshot.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
-        }
+        console.log('📊 Categories loaded:', categories.length);
+        categoriesLoaded = true;
         renderCategories();
-    } catch (e) { console.error('Error loading categories:', e); }
+        
+    } catch (e) { 
+        console.error('Error loading categories:', e);
+        showToast('Error loading categories: ' + e.message, 'error');
+    } finally {
+        seedLock = false;
+    }
 }
 
 async function loadProducts() {
@@ -581,22 +648,25 @@ async function loadProducts() {
         const snapshot = await getDocs(q);
         products = [];
         snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+        console.log('📊 Products found:', products.length);
         
-        if (products.length === 0 && sessionStorage.getItem('efi_products_seeded') !== 'true') {
+        // Seed products only if NO products exist
+        if (products.length === 0) {
             console.log('🌱 Seeding default products...');
             const defaults = [
-                { name: 'Summer Floral Dress', price: 49, discount_price: 69, stock: 15, category: 'Clothes', sizes: 'S,M,L,XL', colors: 'Pink,White', rating: 0, reviews_count: 0, description: 'Elegant floral summer dress.', media: ['https://picsum.photos/400/400?random=1'] },
-                { name: 'Leather Sneakers', price: 79, discount_price: null, stock: 8, category: 'Shoes', sizes: '6,7,8,9,10,11', colors: 'Black,Brown', rating: 0, reviews_count: 0, description: 'Premium leather sneakers.', media: ['https://picsum.photos/400/400?random=2'] },
-                { name: 'Crossbody Bag', price: 34, discount_price: 44, stock: 20, category: 'Bags', sizes: 'One Size', colors: 'Red,Blue,Black', rating: 0, reviews_count: 0, description: 'Stylish leather crossbody bag.', media: ['https://picsum.photos/400/400?random=3'] },
-                { name: 'Classic Watch', price: 129, discount_price: null, stock: 3, category: 'Watches', sizes: 'One Size', colors: 'Gold,Silver', rating: 0, reviews_count: 0, description: 'Elegant stainless steel watch.', media: ['https://picsum.photos/400/400?random=4'] },
-                { name: 'Wireless Earbuds', price: 45, discount_price: 65, stock: 25, category: 'Electronics', sizes: 'One Size', colors: 'White,Black', rating: 0, reviews_count: 0, description: 'Premium wireless earbuds.', media: ['https://picsum.photos/400/400?random=5'] }
+                { name: 'Premium Silk Hijab', price: 29, discount_price: 39, stock: 15, category: 'Hijabs', sizes: 'One Size', colors: 'Black,White,Beige', rating: 0, reviews_count: 0, description: 'Premium quality silk hijab with elegant drape.', media: ['https://picsum.photos/400/400?random=1'] },
+                { name: 'Classic Black Abaya', price: 69, discount_price: null, stock: 8, category: 'Abaya', sizes: 'S,M,L,XL', colors: 'Black,Navy', rating: 0, reviews_count: 0, description: 'Elegant classic black abaya for all occasions.', media: ['https://picsum.photos/400/400?random=2'] },
+                { name: 'Summer Tube Cap', price: 15, discount_price: 22, stock: 20, category: 'Tube Caps', sizes: 'One Size', colors: 'White,Blue,Pink', rating: 0, reviews_count: 0, description: 'Lightweight tube cap for summer protection.', media: ['https://picsum.photos/400/400?random=3'] },
+                { name: 'Special Deal - Hijab Set', price: 45, discount_price: 65, stock: 10, category: 'Special Deals', sizes: 'One Size', colors: 'Assorted', rating: 0, reviews_count: 0, description: 'Limited time special deal on hijab sets.', media: ['https://picsum.photos/400/400?random=4'] }
             ];
             for (const p of defaults) await addDoc(collection(db, 'products'), p);
-            sessionStorage.setItem('efi_products_seeded', 'true');
+            
             const newSnapshot = await getDocs(q);
             products = [];
             newSnapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+            console.log('✅ Products seeded successfully!');
         }
+        
         if (currentCategory) renderCategoryProducts(currentCategory);
         updateCartCount();
     } catch (e) { console.error('Error loading products:', e); }
@@ -608,6 +678,12 @@ async function loadProducts() {
 function renderCategories() {
     const grid = document.getElementById('categoriesGrid');
     if (!grid) return;
+    
+    if (categories.length === 0) {
+        grid.innerHTML = `<div class="cat-item" style="grid-column:1/-1;padding:20px;color:#999;">No categories found. Add some from admin panel.</div>`;
+        return;
+    }
+    
     grid.innerHTML = categories.map(c => `
         <div class="cat-item" onclick="showCategory('${c.name}')">
             <i class="fas ${c.icon || 'fa-tag'}"></i>
@@ -846,7 +922,7 @@ window.openWishlist = function() {
 };
 
 // ============================================================
-// WHATSAPP ORDER - ALL 4 NUMBERS FIXED
+// WHATSAPP ORDER
 // ============================================================
 window.showWhatsAppModal = function(orderData) {
     const modal = document.getElementById('whatsappModal');
@@ -930,10 +1006,8 @@ window.openWhatsAppFloat = function() {
 };
 
 // ============================================================
-// REVIEW SYSTEM - COMPLETE FIXED
+// REVIEW SYSTEM
 // ============================================================
-
-// Star Rating
 window.setRating = function(value) {
     selectedRating = value;
     document.getElementById('selectedRating').value = value;
@@ -945,7 +1019,6 @@ window.setRating = function(value) {
     document.getElementById('ratingText').textContent = ratingTexts[value] || 'Select a rating';
 };
 
-// Submit Review
 window.submitReview = async function(e) {
     e.preventDefault();
     if (reviewSubmitting) return;
@@ -992,25 +1065,18 @@ window.submitReview = async function(e) {
     }
 };
 
-// ============================================================
-// LOAD APPROVED REVIEWS - FIXED (No Index Required!)
-// ============================================================
 async function loadApprovedReviews() {
     try {
         console.log('🔄 Loading approved reviews...');
-        // ✅ SIMPLE QUERY - No index needed!
         const q = query(collection(db, 'reviews'), where('status', '==', 'approved'));
         const snapshot = await getDocs(q);
         const approvedReviews = [];
         snapshot.forEach(doc => approvedReviews.push({ id: doc.id, ...doc.data() }));
-        
-        // Sort by date (newest first) - in JavaScript
         approvedReviews.sort((a, b) => {
             const dateA = a.createdAt?.toDate?.() || new Date(0);
             const dateB = b.createdAt?.toDate?.() || new Date(0);
             return dateB - dateA;
         });
-        
         console.log('✅ Approved reviews loaded:', approvedReviews.length);
         renderApprovedReviews(approvedReviews);
         updateReviewStats(approvedReviews);
@@ -1023,7 +1089,6 @@ async function loadApprovedReviews() {
 function renderApprovedReviews(reviews) {
     const container = document.getElementById('reviewsContainer');
     if (!container) return;
-    
     if (reviews.length === 0) {
         container.innerHTML = `<div style="text-align:center;padding:40px;color:#999;background:white;border-radius:16px;border:1px solid rgba(255,215,215,0.15);">
             <i class="fas fa-star" style="font-size:40px;color:#fadadd;display:block;margin-bottom:10px;"></i>
@@ -1032,7 +1097,6 @@ function renderApprovedReviews(reviews) {
         </div>`;
         return;
     }
-    
     container.innerHTML = reviews.map(r => `
         <div class="review-card">
             <div class="stars">${'⭐'.repeat(Math.min(5, r.rating || 0))}</div>
@@ -1066,7 +1130,7 @@ function updateReviewStats(reviews) {
 }
 
 // ============================================================
-// ADMIN REVIEWS - FIXED (No Index Required!)
+// ADMIN REVIEWS
 // ============================================================
 let adminReviewTab = 'pending';
 
@@ -1086,23 +1150,18 @@ window.loadAdminReviews = async function(status) {
     document.getElementById('tabApproved').style.borderBottomColor = status === 'approved' ? '#b35e5e' : 'transparent';
     
     try {
-        // ✅ SIMPLE QUERY - No orderBy (No index needed!)
         const q = query(collection(db, 'reviews'), where('status', '==', status));
         const snapshot = await getDocs(q);
         const reviews = [];
         snapshot.forEach(doc => reviews.push({ id: doc.id, ...doc.data() }));
-        
-        // ✅ Sort in JavaScript (newest first)
         reviews.sort((a, b) => {
             const dateA = a.createdAt?.toDate?.() || new Date(0);
             const dateB = b.createdAt?.toDate?.() || new Date(0);
             return dateB - dateA;
         });
-        
         console.log('✅ Admin reviews loaded:', reviews.length);
         renderAdminReviews(reviews, status);
         updateAdminStats();
-        
     } catch (error) {
         console.error('❌ Load admin reviews error:', error);
         showToast('Failed to load reviews: ' + error.message, 'error');
@@ -1118,12 +1177,10 @@ window.loadAdminReviews = async function(status) {
 
 function renderAdminReviews(reviews, status) {
     const container = document.getElementById('adminReviewsContainer');
-    
     if (!container) {
         console.error('❌ Container not found!');
         return;
     }
-    
     if (reviews.length === 0) {
         container.innerHTML = `
             <div style="text-align:center;padding:40px;color:#999;">
@@ -1134,7 +1191,6 @@ function renderAdminReviews(reviews, status) {
         `;
         return;
     }
-    
     container.innerHTML = reviews.map(r => `
         <div class="admin-review-card">
             <div class="header">
@@ -1252,7 +1308,7 @@ window.showAbout = function() { document.getElementById('aboutModal').style.disp
 window.showContact = function() { document.getElementById('contactModal').style.display = 'flex'; };
 
 // ============================================================
-// ADMIN - SIMPLE PASSWORD LOGIN
+// ADMIN
 // ============================================================
 let logoClickCount = 0;
 let logoClickTimer = null;
@@ -1285,6 +1341,8 @@ window.openAdmin = async function() {
     await loadCategories();
     await loadProducts();
     
+    const categoryNames = categories.map(c => c.name);
+    
     body.innerHTML = `
         <div class="admin-form">
             <h3>📊 Dashboard <button onclick="adminLogout()" style="float:right;background:#fce4ec;border:none;padding:6px 16px;border-radius:20px;cursor:pointer;">Logout</button></h3>
@@ -1308,7 +1366,10 @@ window.openAdmin = async function() {
                 <input type="number" id="pStock" placeholder="Stock" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.stock||10 : 10}">
             </div>
             <div class="row">
-                <select id="pCategory">${categories.map(c => `<option value="${c.name}" ${editingProductId && products.find(p=>p.id===editingProductId)?.category===c.name ? 'selected' : ''}>${c.name}</option>`).join('')}</select>
+                <select id="pCategory">
+                    ${categoryNames.map(c => `<option value="${c}" ${editingProductId && products.find(p=>p.id===editingProductId)?.category===c ? 'selected' : ''}>${c}</option>`).join('')}
+                    ${categoryNames.length === 0 ? '<option value="">No categories found. Add one first!</option>' : ''}
+                </select>
                 <input type="text" id="pSizes" placeholder="Sizes (comma)" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.sizes||'' : ''}">
             </div>
             <input type="text" id="pColors" placeholder="Colors (comma)" value="${editingProductId ? products.find(p=>p.id===editingProductId)?.colors||'' : ''}">
@@ -1336,9 +1397,11 @@ window.openAdmin = async function() {
             </div>
             <hr style="margin:20px 0;">
             <h3>📂 Manage Categories</h3>
+            <p style="color:#8a6e6e;font-size:13px;margin-bottom:10px;">✅ Default: Hijabs, Abaya, Special Deals, Tube Caps | You can add any category here</p>
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;">
                 <input type="text" id="adminCatName" placeholder="Category name" style="flex:1;min-width:150px;padding:10px;border:2px solid #f0e6e6;border-radius:12px;">
                 <button onclick="adminAddCategory()" class="btn-whatsapp"><i class="fas fa-plus"></i> Add</button>
+                <button onclick="adminResetToDefault()" class="btn-pink" style="background:#e53935;color:white;">Reset to Default</button>
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
                 ${categories.map(c => `
@@ -1365,6 +1428,20 @@ window.openAdmin = async function() {
         }
     }
     modal.style.display = 'flex';
+};
+
+// Reset to default categories
+window.adminResetToDefault = async function() {
+    if (!confirm('This will delete ALL categories and keep only: Hijabs, Abaya, Special Deals, Tube Caps. Continue?')) return;
+    try {
+        await cleanCategories();
+        await loadCategories();
+        showToast('✅ Reset to default categories!', 'success');
+        openAdmin();
+    } catch (e) {
+        console.error(e);
+        showToast('Failed to reset categories.', 'error');
+    }
 };
 
 window.adminLogin = function() {
@@ -1429,6 +1506,7 @@ window.saveProduct = async function() {
         if (!price || isNaN(price)) { showToast('❌ Price likho!', 'error'); return; }
         if (!desc) { showToast('❌ Description likho!', 'error'); return; }
         if (uploadFiles.length === 0) { showToast('❌ Image upload karo!', 'error'); return; }
+        if (!category) { showToast('❌ Category select karo!', 'error'); return; }
         
         showToast('📤 Product save ho raha hai...', 'info');
         
@@ -1442,7 +1520,7 @@ window.saveProduct = async function() {
             price: price,
             discount_price: discount || null,
             stock: stock,
-            category: category || 'Uncategorized',
+            category: category,
             sizes: sizes || 'Various',
             colors: colors || 'Various',
             description: desc,
@@ -1501,6 +1579,17 @@ window.deleteProduct = async function(id) {
 window.adminDeleteCategory = async function(id) {
     if (!confirm('Delete this category?')) return;
     try {
+        const catToDelete = categories.find(c => c.id === id);
+        if (catToDelete) {
+            // Check if there are products in this category
+            const productsInCat = products.filter(p => p.category === catToDelete.name);
+            if (productsInCat.length > 0) {
+                if (!confirm(`This category has ${productsInCat.length} products. They will become uncategorized. Continue?`)) return;
+                for (const p of productsInCat) {
+                    await updateDoc(doc(db, 'products', p.id), { category: 'Uncategorized' });
+                }
+            }
+        }
         categories = categories.filter(c => c.id !== id);
         renderCategories();
         await deleteDoc(doc(db, 'categories', id));
@@ -1517,7 +1606,9 @@ window.adminDeleteCategory = async function(id) {
 window.adminAddCategory = async function() {
     const name = document.getElementById('adminCatName').value.trim();
     if (!name) return showToast('Enter category name', 'error');
+    
     try {
+        // Check if category already exists (case insensitive)
         if (categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
             showToast('Category already exists!', 'error');
             return;
@@ -1575,7 +1666,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.querySelectorAll('.modal').forEach(m => {
         m.addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; });
     });
-    // Load reviews after page loads
     setTimeout(() => loadApprovedReviews(), 1500);
 });
 
@@ -1588,7 +1678,8 @@ window.filterCategoryProducts = filterCategoryProducts;
 
 console.log('✅ EFI Collections ready!');
 console.log('🔑 Admin Password: Efi@Efi$$$');
-console.log('📱 WhatsApp numbers loaded:', settings.whatsapp);
+console.log('📂 Default Categories:', DEFAULT_CATEGORIES);
+console.log('ℹ️ You can add ANY category from admin panel!');
 </script>
 </body>
 </html>
